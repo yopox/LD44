@@ -9,35 +9,35 @@ class Entity extends Phaser.GameObjects.Sprite {
         this.setData("isDead", false);
     }
   }
-}
+
 
 class Player extends Entity {
 
-  constructor(scene, x, y, key, type) {
+  constructor(scene, x, y, key,type) {
     super(scene, x, y, key, "ship");
     this.speed = 5000;
-    this.player.setMaxVelocity(1000).setFriction(80, 600)
+    this.sprite.setMaxVelocity(300).setActiveCollision().setAvsB()
   }
 
   moveUp() {
-    this.player.setAccelerationY(-this.speed);
+    this.sprite.setAccelerationY(-this.speed);
   }
   moveDown() {
-    this.player.setAccelerationY(this.speed);
+    this.sprite.setAccelerationY(this.speed);
   }
   moveLeft() {
-    this.player.setAccelerationX(-this.speed);
+    this.sprite.setAccelerationX(-this.speed);
   }
   moveRight() {
-    this.player.setAccelerationX(this.speed);
+    this.sprite.setAccelerationX(this.speed);
   }
   stopX() {
-    this.player.setAccelerationX(0)
-    this.player.setVelocityX(0);
+    this.sprite.setAccelerationX(0)
+    this.sprite.setVelocityX(100);
   }
   stopY() {
-    this.player.setAccelerationY(0)
-    this.player.setVelocityY(0);
+    this.sprite.setAccelerationY(0)
+    this.sprite.setVelocityY(0);
   }
 
   update() {

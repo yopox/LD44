@@ -8,7 +8,7 @@ class Level extends Phaser.Scene {
     }
 
     create() {
-        console.log(game.config)
+        
         var worldBounds = new Phaser.Geom.Rectangle(0, 0, 3200, HEIGHT);
         this.impact.world.setBounds(0, 0, worldBounds.width, worldBounds.height);
          //  The world is 3200 x 600 in size
@@ -31,10 +31,11 @@ class Level extends Phaser.Scene {
             HEIGHT/2,
             "sprPlayer"
           ); 
+
         this.wallbefore = this.impact.add.body(0, 0, 1, HEIGHT).setFixedCollision().setGravity(0).setVelocityX(200);
         this.wallafter = this.impact.add.body(WIDTH -1, 0, WIDTH, HEIGHT).setFixedCollision().setGravity(0).setVelocityX(200);
         //this.cameras.startFollow(this.wallbefore,false,1,1,WIDTH/2,HEIGHT/2);
-        console.log(this.wallbefore)
+        
     }
 
     update() {
