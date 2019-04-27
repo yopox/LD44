@@ -8,12 +8,14 @@ class Level extends Phaser.Scene {
     }
 
     create() {
-        game.config.width   = 3200;// setSize(3200, 600);
+        console.log(game.config)
+        var worldBounds = new Phaser.Geom.Rectangle(0, 0, 3200, HEIGHT);
+        this.impact.world.setBounds(0, 0, worldBounds.width, worldBounds.height);
          //  The world is 3200 x 600 in size
-        this.cameras.main.setBounds(0, 0, 3200, 600);
+        this.cameras.main.setBounds(0, 0, 3200, HEIGHT);
 
-        this.cameras.main.scrollX = 10;
         
+        this.cameras.main.scrollX = 0;
         
         //  The miniCam is 400px wide, so can display the whole world at a zoom of 0.2
         // this.minimap = this.cameras.add(200, 10, 400, 100).setZoom(0.2);
@@ -27,33 +29,44 @@ class Level extends Phaser.Scene {
 
         this.player = new Player(
             this,
-            200,
-            this.game.config.height * 0.5,
+            WIDTH/2,
+            HEIGHT/2,
             "sprPlayer"
           ); 
+        this.wallbefore = this.impact.add.body(0, 0, 1, HEIGHT).setFixedCollision().setGravity(0).setVelocityX(200);
+        this.wallafter = this.impact.add.body(WIDTH -1, 0, WIDTH, HEIGHT).setFixedCollision().setGravity(0).setVelocityX(200);
+        //this.cameras.startFollow(this.wallbefore,false,1,1,WIDTH/2,HEIGHT/2);
+        console.log(this.wallbefore)
     }
 
     update() {
-        this.player.update();
+        
         if (this.cursors.up.isDown) {
-        this.player.moveUp();
+            this.player.moveUp();
         }
         else if (this.cursors.down.isDown) {
-        this.player.moveDown();
+            this.player.moveDown();
         }
         else {
             this.player.stopY()
         }
         if (this.cursors.left.isDown) {
-        this.player.moveLeft();
+            this.player.moveLeft();
         }
         else if (this.cursors.right.isDown) {
-        this.player.moveRight();
+            this.player.moveRight();
         }
         else {
             this.player.stopX()
         }
-        this.cameras.main.scrollX += 1 ;
+        this.cameras.main.scrollX = this.wallbefore.body.pos.x ;
+        //console.log("before", this.)
+        //this.player.update(1);
+        //console.log("after", this.player.sprite.x)
+        
+        //this.wallbefore.x += 1;
+       
+        
     }
 
     resetScene() {
