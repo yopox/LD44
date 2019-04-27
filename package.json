@@ -1,0 +1,22 @@
+{
+  "name": "ld44",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yopox/LD44.git"
+  },
+  "author": "",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/yopox/LD44/issues"
+  },
+  "homepage": "https://github.com/yopox/LD44#readme",
+  "dependencies": {
+    "phaser": "^3.16.2"
+  }
+}
