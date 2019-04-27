@@ -23,8 +23,6 @@ class Level extends Phaser.Scene {
         // this.minimap.scrollX = 1600;
         // this.minimap.scrollY = 300;
 
-        this.createStarfield();
-
         this.cursors = this.input.keyboard.createCursorKeys();
 
         this.player = new Player(
@@ -60,45 +58,12 @@ class Level extends Phaser.Scene {
             this.player.stopX()
         }
         this.cameras.main.scrollX = this.wallbefore.body.pos.x ;
-        //console.log("before", this.)
-        //this.player.update(1);
-        //console.log("after", this.player.sprite.x)
         
-        //this.wallbefore.x += 1;
        
         
     }
 
     resetScene() {
     }
-
-    createStarfield () {
-    //  Starfield background
-
-    //  Note the scrollFactor values which give them their 'parallax' effect
-
-    var group = this.add.group({ key: 'star', frameQuantity: 256 });
-
-    group.createMultiple({ key: 'bigStar', frameQuantity: 32 });
-
-    var rect = new Phaser.Geom.Rectangle(0, 0, 3200, 550);
-
-    Phaser.Actions.RandomRectangle(group.getChildren(), rect);
-
-    group.children.iterate(function (child, index) {
-
-        var sf = Math.max(0.3, Math.random());
-
-        if (child.texture.key === 'bigStar')
-        {
-            sf = 0.2;
-        }
-
-        child.setScrollFactor(sf);
-
-        // this.minimap.ignore(child);
-
-    }, this);
-}
 
 }
