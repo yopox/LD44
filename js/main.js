@@ -9,6 +9,7 @@ var config = {
         default: 'impact',
         impact: {
             gravity: 0
+
         }
     },
     pixelArt: true,
