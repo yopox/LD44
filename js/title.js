@@ -3,17 +3,20 @@ class Title extends Phaser.Scene {
     constructor() {
         super('Title');
         this.space;
-        this.frame = 0;
+        this.frame;
         this.spaceBar;
         this.starfield;
         this.transition;
-        this.gState = GameState.MAIN;
+        this.gState;
     }
 
     init() {
     }
 
     create() {
+        this.gState = GameState.TRANSITION_IN;
+        this.frame = 0;
+
         this.starfield = new Starfield(this);
 
         this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -21,6 +24,7 @@ class Title extends Phaser.Scene {
         this.space = this.add.bitmapText(WIDTH / 2, 3 * HEIGHT / 4, 'EquipmentPro', 'Press SPACE', 30).setOrigin(0.5);
 
         this.transition = new Transition(this);
+        this.transition.in();
     }
 
     update() {
@@ -29,14 +33,26 @@ class Title extends Phaser.Scene {
         this.frame = (this.frame + 1) % 120;
         this.space.alpha = (60 - Math.abs(this.frame - 60)) / 60;
 
-        if (this.spaceBar.isDown && this.gState == GameState.MAIN) {
-            this.gState = GameState.TRANSITION_OUT;
-            this.transition.out();
-        }
-
-        else if (this.gState == GameState.TRANSITION_OUT && this.transition.ended) {
-            this.starfield.destroy();
-            this.scene.start("Level");
+        switch (this.gState) {
+            case GameState.TRANSITION_IN:
+                if (this.transition.ended) {
+                    this.gState = GameState.MAIN;
+                }
+                break;
+            
+            case GameState.TRANSITION_OUT:
+                if (this.transition.ended) {
+                    this.starfield.destroy();
+                    this.scene.start("Level");
+                }
+                break;
+        
+            default:
+                if (this.spaceBar.isDown) {
+                    this.gState = GameState.TRANSITION_OUT;
+                    this.transition.out();
+                }
+                break;
         }
 
     }

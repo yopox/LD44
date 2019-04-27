@@ -22,4 +22,5 @@ var GameState = {
     TRANSITION_IN: 1,
     TRANSITION_OUT: 2,
     MAIN: 3,
+    WINNING_STATE: 4
   };
