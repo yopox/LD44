@@ -25,8 +25,6 @@ class Title extends Phaser.Scene {
 
     update() {
         this.starfield.scroll(8);
-        console.log(this.transition.ended);
-        
 
         this.frame = (this.frame + 1) % 120;
         this.space.alpha = (60 - Math.abs(this.frame - 60)) / 60;
@@ -37,8 +35,6 @@ class Title extends Phaser.Scene {
         }
 
         else if (this.gState == GameState.TRANSITION_OUT && this.transition.ended) {
-            console.log('Check !');
-            
             this.starfield.destroy();
             this.scene.start("Level");
         }

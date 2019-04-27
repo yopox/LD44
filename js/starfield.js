@@ -10,11 +10,11 @@ class Starfield {
 
     scroll(x) {
         // Create new stars
-        this.create(2 * this.WIDTH, x, 1/2);
+        this.create(2 * WIDTH, x, 1);
 
         // Move stars and remove non visible ones
         this.stars.getChildren().forEach(star => {
-            star.x -= x * star.updateSpeed;
+            star.x = star.x - x * star.updateSpeed;
             if (star.x < -16) {
                 this.stars.remove(star);
                 star.destroy();
@@ -29,6 +29,8 @@ class Starfield {
                 if (Math.random() <= this.PROBA[i] * factor) {
                     var sprite = this.scene.add.sprite(x, this.randomY(), 'stars', i);
                     sprite.updateSpeed = Math.max(Math.random(), this.MIN_SPEED);
+                    sprite.setScrollFactor(0);
+                    sprite.setDepth(-1);
                     this.stars.add(sprite);
                 }
             }
