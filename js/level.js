@@ -31,6 +31,10 @@ class Level extends Phaser.Scene {
         this.transition = new Transition(this);
         this.transition.in();
 
+        this.playerLasers = this.add.group();
+
+
+
     }
 
     update() {
@@ -64,11 +68,29 @@ class Level extends Phaser.Scene {
                 else {
                     this.player.stopX();
                 }
+                if (this.cursors.space.isDown) {
+                    this.player.isShooting = true;
+
+                }
+                else {
+                    this.player.timerShootTick = this.timerShootDelay - 1;
+                    this.player.isShooting = false;
+                }
+                this.player.update()
                 break;
+        }
+
+        this.cameras.main.scrollX += this.speed;
+        this.player.sprite.body.pos.x += this.speed;
+
+        this.playerLasers.getChildren().forEach(laser => {
+            laser.sprite.body.pos.x += this.speed;
+            if (laser.sprite.body.pos.x > this.cameras.main.scrollX + WIDTH) {
+                this.playerLasers.remove(laser);
+                laser.sprite.destroy();
+                laser.destroy();
             }
-            
-            this.cameras.main.scrollX += this.speed;
-            this.player.sprite.body.pos.x += this.speed;
+        });
 
     }
 
