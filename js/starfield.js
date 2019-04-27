@@ -3,14 +3,14 @@ class Starfield {
     constructor(scene) {
         this.scene = scene;
         this.stars = scene.add.group();
-        this.PROBA = [0.05, 0.05, 0.03, 0.01];
+        this.PROBA = [0.025, 0.025, 0.015, 0.015, 0.005];
         this.MIN_SPEED = 0.2;
-        this.create(0, 2 * scene.game.config.width, 1);
+        this.create(0, 2 * WIDTH, 1);
     }
 
     scroll(x) {
         // Create new stars
-        this.create(2 * this.scene.game.config.width, x, 1/5);
+        this.create(2 * this.WIDTH, x, 1/2);
 
         // Move stars and remove non visible ones
         this.stars.getChildren().forEach(star => {
@@ -36,7 +36,7 @@ class Starfield {
     }
 
     randomY() {
-        return Math.floor(Math.random() * this.scene.game.config.height);
+        return Math.floor(Math.random() * HEIGHT);
     }
 
     destroy() {
