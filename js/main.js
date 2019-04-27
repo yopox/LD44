@@ -8,22 +8,8 @@ var config = {
             gravity: 0
         }
     },
-    scene: {
-        preload: preload,
-        create: create
-    }
+    pixelArt: true,
+    scene: [Load, Level]
 };
 
 var game = new Phaser.Game(config);
-
-function preload ()
-{
-    this.load.setBaseURL('http://labs.phaser.io');
-
-    this.load.image('sky', 'assets/skies/space3.png');
-}
-
-function create ()
-{
-    this.add.image(400, 300, 'sky');
-}
