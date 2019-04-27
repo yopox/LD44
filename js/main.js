@@ -1,7 +1,7 @@
 var config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: 640,
+    height: 380,
     physics: {
         default: 'impact',
         impact: {
@@ -9,7 +9,7 @@ var config = {
         }
     },
     pixelArt: true,
-    scene: [Load, Level]
+    scene: [Load, Title, Level]
 };
 
 var game = new Phaser.Game(config);

@@ -1,5 +1,3 @@
-fontReady = false;
-
 class Load extends Phaser.Scene {
 
     constructor() {
@@ -7,35 +5,21 @@ class Load extends Phaser.Scene {
     }
 
     init() {
-        var element = document.createElement('style');
-        document.head.appendChild(element);
-        var sheet = element.sheet;
-        var styles = '@font-face { font-family: "EquipmentPro"; src: url("assets/EquipmentPro.ttf") format("truetype"); }\n';
-        sheet.insertRule(styles, 0);
     }
 
     preload() {
-        this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
+       
         this.load.image('star', 'assets/background.png');
         this.load.image('bigStar', 'assets/bigstar.png');
         this.load.image('ship', 'assets/jet.png');
+        this.load.bitmapFont('EquipmentPro', 'assets/equipmentpro_medium_12.png', 'assets/equipmentpro_medium_12.fnt');
     }
 
     create() {
-        WebFont.load({
-            custom: {
-                families: ['EquipmentPro']
-            },
-            active: function () {
-                fontReady = true;
-            }
-        });
     }
 
     update() {
-        if (fontReady) {
-            this.scene.start("Level");
-        }
+        this.scene.start("Title");
     }
 
 }
