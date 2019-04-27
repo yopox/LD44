@@ -18,8 +18,8 @@ class Player extends Entity {
     this.speed = 5000;
     this.sprite.setMaxVelocity(300).setActiveCollision().setAvsB()
     this.isShooting = false;
-    this.timerShootDelay = 10;
-    this.timerShootTick = this.timerShootDelay - 1;
+    this.timerShootDelay = 40;
+    this.timerShootTick = this.timerShootDelay ;
   }
 
   moveUp() {
@@ -63,8 +63,8 @@ class Player extends Entity {
 class PlayerLaser extends Entity {
   constructor(scene, x, y) {
     super(scene, x, y, "sprLaserPlayer", "bullet");
-
-    this.sprite.setVelocityX(500);
-
+    this.sprite.setMaxVelocity(300);
+    this.sprite.setVelocityX(600);
+    
   }
 }
