@@ -38,9 +38,6 @@ class Level extends Phaser.Scene {
             if (obj.gid < 5) {
                 // Speed modifiers
                 this.speedModif.push(obj);
-            } else {
-                console.log(obj);
-                
             }
             else if (obj.gid == 5) {
                 this.enemiesTiled.push(obj)
