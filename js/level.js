@@ -18,19 +18,19 @@ class Level extends Phaser.Scene {
         this.targetSpeed = 30;
         this.starfield = new Starfield(this);
         this.cursors = this.input.keyboard.createCursorKeys();
-        
+
         this.player = new Player(
             this,
             WIDTH / 6,
             HEIGHT / 2,
             "ship"
         );
-     
-        
+
+
         // Tilemap loading
         this.map = this.make.tilemap({ key: 'map' });
         console.log(this.map);
-        
+
         var mapObjects = this.map.getObjectLayer("objects").objects;
         this.speedModif = [];
         this.enemiesTiled = [];
@@ -38,9 +38,6 @@ class Level extends Phaser.Scene {
             if (obj.gid < 5) {
                 // Speed modifiers
                 this.speedModif.push(obj);
-            } else {
-                console.log(obj);
-                
             }
             else if (obj.gid == 5) {
                 this.enemiesTiled.push(obj)
@@ -58,18 +55,12 @@ class Level extends Phaser.Scene {
         this.playerLasers = this.add.group();
         this.enemiesSprite = this.add.group();
 
-       
-    
-
-
     }
 
     update() {
         this.updateSpeed();
-        this.updateEnemies ()
-        this.starfield.scroll(2*this.speed + 1);
-
-        
+        this.updateEnemies()
+        this.starfield.scroll(2 * this.speed + 1);
 
         switch (this.gState) {
             case GameState.TRANSITION_IN:
@@ -140,7 +131,7 @@ class Level extends Phaser.Scene {
             }
         });
         this.enemiesSprite.getChildren().forEach(enemy => {
-            enemy.sprite.body.pos.x += 2*this.speed/3;
+            enemy.sprite.body.pos.x += 2 * this.speed / 3;
             enemy.update();
         });
 
@@ -177,24 +168,21 @@ class Level extends Phaser.Scene {
         }
     }
 
-    updateEnemies () {
-        
-        if (this.enemiesTiled.length && this.enemiesTiled[0].x < this.player.sprite.body.pos.x + 2 * WIDTH){
+    updateEnemies() {
+
+        if (this.enemiesTiled.length && this.enemiesTiled[0].x < this.player.sprite.body.pos.x + 2 * WIDTH) {
             // console.log(this.enemiesTiled[0].x)
             var enemyBeam = this.enemiesTiled.shift();
-            
+
             if (enemyBeam.gid == 5) {
                 var enemy = new Pizza(
                     this,
-                   enemyBeam.x, 
-                   enemyBeam.y
-                  );
-                 
-                this.enemiesSprite.add(enemy)
-                
-                
-            }
+                    enemyBeam.x,
+                    enemyBeam.y
+                );
 
+                this.enemiesSprite.add(enemy)
+            }
         }
     }
 }

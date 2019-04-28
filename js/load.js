@@ -8,8 +8,8 @@ class Load extends Phaser.Scene {
     }
 
     preload() {
-       
-       
+
+
         this.load.image('bullet', 'assets/graphics/bullet.png');
 
         this.load.image('star', 'assets/graphics/background.png');
@@ -22,7 +22,7 @@ class Load extends Phaser.Scene {
         this.load.tilemapTiledJSON('map', 'assets/maps/map1.json');
 
         for (let i = 1; i < 6; i++) {
-            this.load.audio('type'+i, 'assets/sfx/type' + i + '.ogg');
+            this.load.audio('type' + i, 'assets/sfx/type' + i + '.ogg');
         }
         this.load.audio('diary', 'assets/bgm/diary.ogg');
 

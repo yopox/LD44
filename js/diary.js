@@ -5,6 +5,8 @@ class Diary extends Phaser.Scene {
         this.transition;
         this.gState;
         this.space;
+        this.keySpace;
+        this.keyTab;
         this.bitmapText;
         this.text;
         this.fullText;
@@ -31,11 +33,12 @@ class Diary extends Phaser.Scene {
 
         for (let i = 1; i < 6; i++) {
             this.typewriter.push(this.sound.add('type' + i));
-            this.typewriter[i-1].volume = 0.5;
+            this.typewriter[i - 1].volume = 0.5;
         }
 
-        this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        
+        this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.keyTab = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB);
+
         this.bitmapText = this.add.bitmapText(48, 16, 'EquipmentPro', "", 24).setOrigin(0);
         this.space = this.add.bitmapText(WIDTH / 2, HEIGHT - 24, 'EquipmentPro', 'Press SPACE to continue', 24).setOrigin(0.5, 1);
         this.space.visible = false;
@@ -53,7 +56,7 @@ class Diary extends Phaser.Scene {
                     this.gState = GameState.MAIN;
                 }
                 break;
-            
+
             case GameState.TRANSITION_OUT:
                 this.bgm.volume = Math.max(0, this.bgm.volume - 0.015);
                 if (this.transition.ended) {
@@ -61,16 +64,23 @@ class Diary extends Phaser.Scene {
                     this.scene.start("Level");
                 }
                 break;
-        
+
             default:
                 this.frame = (this.frame + 1) % 120;
                 this.space.alpha = (60 - Math.abs(this.frame - 60)) / 60;
-                
+
                 this.textFrame = this.textFrame + 1;
                 if (this.textFrame == this.TEXT_SPEED) {
                     this.textFrame = 0;
                     this.updateText();
                 }
+
+                if (this.keyTab.isDown) {
+                    this.bitmapText.text = this.fullText;
+                    this.gState = GameState.TRANSITION_OUT;
+                    this.transition.out();
+                }
+
                 break;
         }
 
@@ -91,7 +101,7 @@ class Diary extends Phaser.Scene {
                 case ' ':
                     this.textFrame = -this.TEXT_SPEED;
                     break;
-                    
+
                 case '\n':
                     this.textFrame = -4 * this.TEXT_SPEED;
                     break;
@@ -104,7 +114,7 @@ class Diary extends Phaser.Scene {
                 this.frame = 0;
             }
         } else {
-            if (this.spaceBar.isDown) {
+            if (this.keySpace.isDown) {
                 this.gState = GameState.TRANSITION_OUT;
                 this.transition.out();
             }
