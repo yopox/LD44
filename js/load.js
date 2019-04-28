@@ -19,6 +19,12 @@ class Load extends Phaser.Scene {
         this.load.image('ship', 'assets/graphics/jet.png');
         this.load.bitmapFont('EquipmentPro', 'assets/font/equipmentpro_medium_12.png', 'assets/font/equipmentpro_medium_12.fnt');
         this.load.tilemapTiledJSON('map', 'assets/maps/map1.json');
+
+        for (let i = 1; i < 6; i++) {
+            this.load.audio('type'+i, 'assets/sfx/type' + i + '.ogg');
+        }
+        this.load.audio('diary', 'assets/bgm/diary.ogg');
+
     }
 
     create() {
