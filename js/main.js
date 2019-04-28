@@ -12,7 +12,7 @@ var config = {
         }
     },
     zoom: 2,
-    scene: [Load, Title, Diary, Level]
+    scene: [Load, Title, Diary, Planets, Level]
 };
 
 var game = new Phaser.Game(config);
@@ -24,3 +24,7 @@ var GameState = {
     MAIN: 3,
     WINNING_STATE: 4
 };
+
+function mod(n, m) {
+    return ((n % m) + m) % m;
+}
