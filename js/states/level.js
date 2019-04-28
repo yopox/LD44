@@ -19,14 +19,15 @@ class Level extends Phaser.Scene {
         this.targetSpeed = 30;
         this.starfield = new Starfield(this);
         this.cursors = this.input.keyboard.createCursorKeys();
-
+        
         this.player = new Player(
             this,
             WIDTH / 6,
             HEIGHT / 2,
             "ship"
         );
-
+        console.log(this.player);
+    
 
         // Tilemap loading
         this.map = this.make.tilemap({ key: 'map' });
@@ -50,8 +51,8 @@ class Level extends Phaser.Scene {
         this.victoryX = this.map.widthInPixels - 256;
 
         // GUI
-        this.crew = this.add.bitmapText(64, 0, 'EquipmentPro', "Crew : " + game.progress.crew, 24).setOrigin(0).setScrollFactor(0);
-
+        this.crew = this.add.bitmapText(64, 0, 'EquipmentPro', "Crew : " + this.game.progress.crew, 24).setOrigin(0).setScrollFactor(0);
+        
         this.transition = new Transition(this);
         this.transition.in();
 
@@ -75,7 +76,7 @@ class Level extends Phaser.Scene {
                 break;
 
             case GameState.WINNING_STATE:
-                if (this.player.sprite.body.pos.x > this.victoryX + 128) {
+                if (this.player.sprite.x > this.victoryX + 128) {
                     this.gState = GameState.TRANSITION_OUT;
                     this.transition.out();
                 }
@@ -121,27 +122,27 @@ class Level extends Phaser.Scene {
         }
 
         this.cameras.main.scrollX += this.speed;
-        this.player.sprite.body.pos.x += this.speed;
+        this.player.sprite.x += this.speed;
 
         this.playerLasers.getChildren().forEach(laser => {
-            laser.sprite.body.pos.x += this.speed;
+            laser.sprite.x += this.speed;
         });
         this.playerLasers.getChildren().forEach(laser => {
-            if (laser.sprite.body.pos.x > this.cameras.main.scrollX + WIDTH + 16) {
+            if (laser.sprite.x > this.cameras.main.scrollX + WIDTH + 16) {
                 this.playerLasers.remove(laser);
                 laser.sprite.destroy();
                 laser.destroy();
             }
         });
         this.enemiesSprite.getChildren().forEach(enemy => {
-            enemy.sprite.body.pos.x += 2 * this.speed / 3;
+            enemy.sprite.x += 2 * this.speed / 3;
             enemy.update();
         });
 
 
 
         // Winning condition
-        if (this.player.sprite.body.pos.x > this.victoryX && this.gState == GameState.MAIN) {
+        if (this.player.sprite.x > this.victoryX && this.gState == GameState.MAIN) {
             this.gState = GameState.WINNING_STATE;
             this.player.sprite.setVelocityX(300);
             console.log('winning');
@@ -157,7 +158,7 @@ class Level extends Phaser.Scene {
     }
 
     updateSpeed() {
-        if (this.speedModif.length && this.speedModif[0].x < this.player.sprite.body.pos.x) {
+        if (this.speedModif.length && this.speedModif[0].x < this.player.sprite.x) {
             var sM = this.speedModif.shift();
             var speed = (sM.gid - 1) * 4;
             console.log("new speed : " + speed);
@@ -173,7 +174,7 @@ class Level extends Phaser.Scene {
 
     updateEnemies() {
 
-        if (this.enemiesTiled.length && this.enemiesTiled[0].x < this.player.sprite.body.pos.x + 2 * WIDTH) {
+        if (this.enemiesTiled.length && this.enemiesTiled[0].x < this.player.sprite.x + 2 * WIDTH) {
             // console.log(this.enemiesTiled[0].x)
             var enemyBeam = this.enemiesTiled.shift();
 

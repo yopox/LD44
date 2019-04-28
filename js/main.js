@@ -6,8 +6,8 @@ var config = {
     width: WIDTH,
     height: HEIGHT,
     physics: {
-        default: 'impact',
-        impact: {
+        default: 'arcade',
+        arcade: {
             gravity: 0
         }
     },

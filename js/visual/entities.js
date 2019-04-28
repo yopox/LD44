@@ -4,7 +4,7 @@ class Entity extends Phaser.GameObjects.Sprite {
     super(scene, x, y, key);
 
     this.scene = scene;
-    this.sprite = scene.impact.add.sprite(x, y, key,type);
+    this.sprite = this.scene.physics.add.sprite(x, y, key,type);
     this.isDead = false;
   }
 
@@ -17,7 +17,7 @@ class Player extends Entity {
   constructor(scene, x, y, key, type) {
     super(scene, x, y, key);  
     this.speed = 5000;
-    this.sprite.setMaxVelocity(300).setActiveCollision().setAvsB()
+    this.sprite.setMaxVelocity(300);
     this.isShooting = false;
     this.timerShootDelay = 40;
     this.timerShootTick = this.timerShootDelay ;
@@ -50,7 +50,7 @@ class Player extends Entity {
         this.timerShootTick += 1; // every game update, increase timerShootTick by one until we reach the value of timerShootDelay
       }
       else { // when the "manual timer" is triggered:
-        var laser = new PlayerLaser(this.scene, this.sprite.body.pos.x + 32, this.sprite.body.pos.y + 8);
+        var laser = new PlayerLaser(this.scene, this.sprite.x + 32, this.sprite.y + 8);
         this.scene.playerLasers.add(laser);
         this.timerShootTick = 0;
       }
@@ -76,11 +76,11 @@ class Pizza extends Entity {
   update() {
     if (!this.isDead && this.scene.player) {
       if (Phaser.Math.Distance.Between(
-        this.sprite.body.pos.x,
-        this.sprite.body.pos.y,
-        this.scene.player.sprite.body.pos.x,
-        this.scene.player.sprite.body.pos.y
-      ) < 320 && this.scene.player.sprite.body.pos.x < this.sprite.body.pos.x) {
+        this.sprite.x,
+        this.sprite.y,
+        this.scene.player.sprite.x,
+        this.scene.player.sprite.y
+      ) < 320 && this.scene.player.sprite.x < this.sprite.x) {
 
         this.state = this.states.CHASE;
       }
@@ -89,8 +89,8 @@ class Pizza extends Entity {
       }
 
       if (this.state == this.states.CHASE) {
-        var dx = this.scene.player.sprite.body.pos.x - this.sprite.body.pos.x;
-        var dy = this.scene.player.sprite.body.pos.y - this.sprite.body.pos.y;
+        var dx = this.scene.player.sprite.x - this.sprite.x;
+        var dy = this.scene.player.sprite.y - this.sprite.y;
 
         var angle = Math.atan2(dy, dx);
 
@@ -100,7 +100,7 @@ class Pizza extends Entity {
           Math.sin(angle) * speed
         );
 
-        if (this.sprite.body.pos.x < this.scene.player.sprite.body.pos.x) {
+        if (this.sprite.x < this.scene.player.sprite.x) {
           this.angle -= 5;
         }
         else {
