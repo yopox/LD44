@@ -23,8 +23,9 @@ class Level extends Phaser.Scene {
             this,
             WIDTH / 6,
             HEIGHT / 2,
-            "sprPlayer"
+            "ship"
         );
+     
         
         // Tilemap loading
         this.map = this.make.tilemap({ key: 'map' });
@@ -32,13 +33,18 @@ class Level extends Phaser.Scene {
         
         var mapObjects = this.map.getObjectLayer("objects").objects;
         this.speedModif = [];
+        this.enemiesTiled = [];
         mapObjects.forEach(obj => {
             if (obj.gid < 5) {
                 // Speed modifiers
                 this.speedModif.push(obj);
             }
+            else if (obj.gid == 5) {
+                this.enemiesTiled.push(obj)
+            }
         });
         this.speedModif.sort(function (a, b) { return a.x - b.x });
+        this.enemiesTiled.sort(function (a, b) { return a.x - b.x });
         this.impact.world.setBounds(0, 0, this.map.widthInPixels, HEIGHT);
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, HEIGHT);
         this.victoryX = this.map.widthInPixels - 256;
@@ -47,14 +53,20 @@ class Level extends Phaser.Scene {
         this.transition.in();
 
         this.playerLasers = this.add.group();
+        this.enemiesSprite = this.add.group();
 
+       
+    
 
 
     }
 
     update() {
         this.updateSpeed();
-        this.starfield.scroll(this.speed + 1);
+        this.updateEnemies ()
+        this.starfield.scroll(2*this.speed + 1);
+
+        
 
         switch (this.gState) {
             case GameState.TRANSITION_IN:
@@ -124,6 +136,11 @@ class Level extends Phaser.Scene {
                 laser.destroy();
             }
         });
+        this.enemiesSprite.getChildren().forEach(enemy => {
+            enemy.sprite.body.pos.x += 2*this.speed/3;
+            enemy.update();
+        });
+
 
 
         // Winning condition
@@ -145,7 +162,7 @@ class Level extends Phaser.Scene {
     updateSpeed() {
         if (this.speedModif.length && this.speedModif[0].x < this.player.sprite.body.pos.x) {
             var sM = this.speedModif.shift();
-            var speed = (sM.gid - 1) * 10;
+            var speed = (sM.gid - 1) * 4;
             console.log("new speed : " + speed);
             this.targetSpeed = speed;
         }
@@ -157,4 +174,24 @@ class Level extends Phaser.Scene {
         }
     }
 
+    updateEnemies () {
+        
+        if (this.enemiesTiled.length && this.enemiesTiled[0].x < this.player.sprite.body.pos.x + 2 * WIDTH){
+            // console.log(this.enemiesTiled[0].x)
+            var enemyBeam = this.enemiesTiled.shift();
+            
+            if (enemyBeam.gid == 5) {
+                var enemy = new Pizza(
+                    this,
+                   enemyBeam.x, 
+                   enemyBeam.y
+                  );
+                 
+                this.enemiesSprite.add(enemy)
+                
+                
+            }
+
+        }
+    }
 }

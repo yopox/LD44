@@ -1,20 +1,21 @@
 class Entity extends Phaser.GameObjects.Sprite {
 
-  constructor(scene, x, y, key, type) {
+  constructor(scene, x, y, key, type = 0) {
     super(scene, x, y, key);
 
     this.scene = scene;
-    this.sprite = scene.impact.add.sprite(x, y, type);
-
-    this.setData("isDead", false);
+    this.sprite = scene.impact.add.sprite(x, y, key,type);
+    this.isDead = false;
   }
+
+  
 }
 
 
 class Player extends Entity {
 
   constructor(scene, x, y, key, type) {
-    super(scene, x, y, key, "ship");
+    super(scene, x, y, key);  
     this.speed = 5000;
     this.sprite.setMaxVelocity(300).setActiveCollision().setAvsB()
     this.isShooting = false;
@@ -58,9 +59,61 @@ class Player extends Entity {
   }
 }
 
+class Pizza extends Entity {
+  constructor(scene, x, y) {
+    super(scene, x, y, "tiles", 4);
+    
+    this.sprite.setVelocityX (0);
+
+    this.states = {
+      MOVE_DOWN: "MOVE_DOWN",
+      CHASE: "CHASE"
+    };
+    this.state = this.states.MOVE_DOWN;
+    
+  }
+
+  update() {
+    if (!this.isDead && this.scene.player) {
+      if (Phaser.Math.Distance.Between(
+        this.sprite.body.pos.x,
+        this.sprite.body.pos.y,
+        this.scene.player.sprite.body.pos.x,
+        this.scene.player.sprite.body.pos.y
+      ) < 320 && this.scene.player.sprite.body.pos.x < this.sprite.body.pos.x) {
+
+        this.state = this.states.CHASE;
+      }
+      else  {
+        this.state = this.states.MOVE_DOWN
+      }
+
+      if (this.state == this.states.CHASE) {
+        var dx = this.scene.player.sprite.body.pos.x - this.sprite.body.pos.x;
+        var dy = this.scene.player.sprite.body.pos.y - this.sprite.body.pos.y;
+
+        var angle = Math.atan2(dy, dx);
+
+        var speed = 300;
+        this.sprite.setVelocity(
+          Math.cos(angle) * speed,
+          Math.sin(angle) * speed
+        );
+
+        if (this.sprite.body.pos.x < this.scene.player.sprite.body.pos.x) {
+          this.angle -= 5;
+        }
+        else {
+          this.angle += 5;
+        } 
+      }
+    }
+  }
+}
+
 class PlayerLaser extends Entity {
   constructor(scene, x, y) {
-    super(scene, x, y, "sprLaserPlayer", "bullet");
+    super(scene, x, y, "bullet");
     this.sprite.setMaxVelocity(300);
     this.sprite.setVelocityX(600);
     
