@@ -13,7 +13,7 @@ var config = {
         }
     },
     pixelArt: true,
-    scene: [Load, Title, Level]
+    scene: [Load, Title, Diary, Level]
 };
 
 var game = new Phaser.Game(config);
