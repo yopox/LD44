@@ -58,6 +58,9 @@ class Level extends Phaser.Scene {
 
         this.playerLasers = this.add.group();
         this.enemiesSprite = this.add.group();
+        this.physics.add.overlap(this.enemiesSprite, this.playerLasers, function(foe, laser) {
+            foe.destroy();
+        });
 
     }
 
@@ -76,7 +79,7 @@ class Level extends Phaser.Scene {
                 break;
 
             case GameState.WINNING_STATE:
-                if (this.player.sprite.x > this.victoryX + 128) {
+                if (this.player.x > this.victoryX + 128) {
                     this.gState = GameState.TRANSITION_OUT;
                     this.transition.out();
                 }
@@ -91,19 +94,19 @@ class Level extends Phaser.Scene {
                 break;
 
             default:
-                if (this.cursors.up.isDown && this.player.sprite.y > 18) {
+                if (this.cursors.up.isDown && this.player.y > 18) {
                     this.player.moveUp();
                 }
-                else if (this.cursors.down.isDown && HEIGHT - this.player.sprite.y > 18) {
+                else if (this.cursors.down.isDown && HEIGHT - this.player.y > 18) {
                     this.player.moveDown();
                 }
                 else {
                     this.player.stopY();
                 }
-                if (this.cursors.left.isDown && this.player.sprite.x > this.cameras.main.scrollX + 32) {
+                if (this.cursors.left.isDown && this.player.x > this.cameras.main.scrollX + 32) {
                     this.player.moveLeft();
                 }
-                else if (this.cursors.right.isDown && this.player.sprite.x < this.cameras.main.scrollX + WIDTH - 32) {
+                else if (this.cursors.right.isDown && this.player.x < this.cameras.main.scrollX + WIDTH - 32) {
                     this.player.moveRight();
                 }
                 else {
@@ -122,29 +125,27 @@ class Level extends Phaser.Scene {
         }
 
         this.cameras.main.scrollX += this.speed;
-        this.player.sprite.x += this.speed;
+        this.player.x += this.speed;
 
         this.playerLasers.getChildren().forEach(laser => {
-            laser.sprite.x += this.speed;
+            laser.x += this.speed;
         });
         this.playerLasers.getChildren().forEach(laser => {
-            if (laser.sprite.x > this.cameras.main.scrollX + WIDTH + 16) {
+            if (laser.x > this.cameras.main.scrollX + WIDTH + 16) {
                 this.playerLasers.remove(laser);
-                laser.sprite.destroy();
+                laser.destroy();
                 laser.destroy();
             }
         });
         this.enemiesSprite.getChildren().forEach(enemy => {
-            enemy.sprite.x += 2 * this.speed / 3;
+            enemy.x += 2 * this.speed / 3;
             enemy.update();
         });
 
-
-
         // Winning condition
-        if (this.player.sprite.x > this.victoryX && this.gState == GameState.MAIN) {
+        if (this.player.x > this.victoryX && this.gState == GameState.MAIN) {
             this.gState = GameState.WINNING_STATE;
-            this.player.sprite.setVelocityX(300);
+            this.player.setVelocityX(300);
             console.log('winning');
             this.player.isShooting = false;
         }
@@ -154,11 +155,11 @@ class Level extends Phaser.Scene {
     resetScene() {
         this.speedModif = [];
         this.starfield.destroy();
-        this.player.sprite.destroy();
+        this.player.destroy();
     }
 
     updateSpeed() {
-        if (this.speedModif.length && this.speedModif[0].x < this.player.sprite.x) {
+        if (this.speedModif.length && this.speedModif[0].x < this.player.x) {
             var sM = this.speedModif.shift();
             var speed = (sM.gid - 1) * 4;
             console.log("new speed : " + speed);
@@ -174,7 +175,7 @@ class Level extends Phaser.Scene {
 
     updateEnemies() {
 
-        if (this.enemiesTiled.length && this.enemiesTiled[0].x < this.player.sprite.x + 2 * WIDTH) {
+        if (this.enemiesTiled.length && this.enemiesTiled[0].x < this.player.x + 2 * WIDTH) {
             // console.log(this.enemiesTiled[0].x)
             var enemyBeam = this.enemiesTiled.shift();
 
