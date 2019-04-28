@@ -15,9 +15,9 @@ class Player extends Entity {
 		super(scene, x, y, "ship");
 		this.speed = 5000;
 
-		// this.setMaxVelocity(300);
+		this.setMaxVelocity(300);
 		this.isShooting = false;
-		this.timerShootDelay = 40;
+		this.timerShootDelay = 20;
 		this.timerShootTick = this.timerShootDelay;
 	}
 
@@ -111,7 +111,8 @@ class Pizza extends Entity {
 class PlayerLaser extends Entity {
 	constructor(scene, x, y) {
 		super(scene, x, y, "bullet");
-		this.setMaxVelocity(300);
-		this.setVelocityX(600);
+		this.body.offset.x = scene.speed;
+		this.setMaxVelocity(600);
+		this.setVelocityX(1000);
 	}
 }

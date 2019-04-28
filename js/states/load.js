@@ -34,7 +34,7 @@ class Load extends Phaser.Scene {
     }
 
     update() {
-        this.scene.start("Level");
+        this.scene.start("Title");
     }
 
 }

@@ -31,7 +31,6 @@ class Level extends Phaser.Scene {
 
         // Tilemap loading
         this.map = this.make.tilemap({ key: 'map' });
-        console.log(this.map);
 
         var mapObjects = this.map.getObjectLayer("objects").objects;
         this.speedModif = [];
@@ -117,7 +116,6 @@ class Level extends Phaser.Scene {
 
                 }
                 else {
-                    //this.player.timerShootTick = this.timerShootDelay ;
                     this.player.isShooting = false;
                 }
                 this.player.update()
@@ -130,15 +128,14 @@ class Level extends Phaser.Scene {
         this.playerLasers.getChildren().forEach(laser => {
             laser.x += this.speed;
         });
+
         this.playerLasers.getChildren().forEach(laser => {
             if (laser.x > this.cameras.main.scrollX + WIDTH + 16) {
-                this.playerLasers.remove(laser);
-                laser.destroy();
-                laser.destroy();
+                this.playerLasers.remove(laser, true, true);
             }
         });
+
         this.enemiesSprite.getChildren().forEach(enemy => {
-            enemy.x += 2 * this.speed / 3;
             enemy.update();
         });
 
@@ -146,7 +143,6 @@ class Level extends Phaser.Scene {
         if (this.player.x > this.victoryX && this.gState == GameState.MAIN) {
             this.gState = GameState.WINNING_STATE;
             this.player.setVelocityX(300);
-            console.log('winning');
             this.player.isShooting = false;
         }
 
@@ -168,9 +164,18 @@ class Level extends Phaser.Scene {
 
         if (this.speed < this.targetSpeed) {
             this.speed += 1;
+            this.updateBodies();
         } else if (this.speed > this.targetSpeed) {
             this.speed -= 1;
+            this.updateBodies();
         }
+    }
+
+    updateBodies() {
+        this.player.body.offset.x = this.speed;
+        this.playerLasers.getChildren().forEach(laser => {
+            laser.body.offset.x = this.speed;
+        });
     }
 
     updateEnemies() {

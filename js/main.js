@@ -8,8 +8,7 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: 0,
-            debug: true
+            gravity: 0
         }
     },
     zoom: 2,
