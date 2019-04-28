@@ -51,8 +51,6 @@ class Player extends Entity {
       else { // when the "manual timer" is triggered:
         var laser = new PlayerLaser(this.scene, this.sprite.body.pos.x + 32, this.sprite.body.pos.y + 8);
         this.scene.playerLasers.add(laser);
-
-
         this.timerShootTick = 0;
       }
     }

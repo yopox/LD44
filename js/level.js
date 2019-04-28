@@ -14,14 +14,14 @@ class Level extends Phaser.Scene {
 
     create() {
         this.gState = GameState.TRANSITION_IN;
-        this.speed = 0;
-        this.targetSpeed = 0;
+        this.speed = 30;
+        this.targetSpeed = 30;
         this.starfield = new Starfield(this);
         this.cursors = this.input.keyboard.createCursorKeys();
         
         this.player = new Player(
             this,
-            WIDTH / 2,
+            WIDTH / 6,
             HEIGHT / 2,
             "sprPlayer"
         );
@@ -34,14 +34,14 @@ class Level extends Phaser.Scene {
         this.speedModif = [];
         mapObjects.forEach(obj => {
             if (obj.gid < 5) {
+                // Speed modifiers
                 this.speedModif.push(obj);
-            } else if (obj.gid == 5) {
-                this.victoryX = obj.x;
             }
         });
         this.speedModif.sort(function (a, b) { return a.x - b.x });
         this.impact.world.setBounds(0, 0, this.map.widthInPixels, HEIGHT);
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, HEIGHT);
+        this.victoryX = this.map.widthInPixels - 256;
 
         this.transition = new Transition(this);
         this.transition.in();
@@ -116,6 +116,8 @@ class Level extends Phaser.Scene {
 
         this.playerLasers.getChildren().forEach(laser => {
             laser.sprite.body.pos.x += this.speed;
+        });
+        this.playerLasers.getChildren().forEach(laser => {
             if (laser.sprite.body.pos.x > this.cameras.main.scrollX + WIDTH + 16) {
                 this.playerLasers.remove(laser);
                 laser.sprite.destroy();
@@ -143,17 +145,15 @@ class Level extends Phaser.Scene {
     updateSpeed() {
         if (this.speedModif.length && this.speedModif[0].x < this.player.sprite.body.pos.x) {
             var sM = this.speedModif.shift();
-            var speed = (sM.gid - 1) * 6;
+            var speed = (sM.gid - 1) * 10;
             console.log("new speed : " + speed);
             this.targetSpeed = speed;
         }
 
         if (this.speed < this.targetSpeed) {
-            this.speed++;
-            this.player.sprite.body.pos.x++;
+            this.speed += 1;
         } else if (this.speed > this.targetSpeed) {
-            this.speed--;
-            this.player.sprite.body.pos.x--;
+            this.speed -= 1;
         }
     }
 
