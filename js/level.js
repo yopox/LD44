@@ -36,6 +36,9 @@ class Level extends Phaser.Scene {
             if (obj.gid < 5) {
                 // Speed modifiers
                 this.speedModif.push(obj);
+            } else {
+                console.log(obj);
+                
             }
         });
         this.speedModif.sort(function (a, b) { return a.x - b.x });

@@ -4,7 +4,7 @@ class Starfield {
         this.scene = scene;
         this.stars = scene.add.group();
         this.PROBA = [0.025, 0.025, 0.015, 0.015, 0.005];
-        this.MIN_SPEED = 0.2;
+        this.MIN_SPEED = 0.1;
         this.create(0, 2 * WIDTH, 1);
         this.frame = 0;
     }
@@ -37,7 +37,7 @@ class Starfield {
                     var sprite = this.scene.add.sprite(x, this.randomY(), 'stars', i);
                     sprite.updateSpeed = Math.max(Math.random(), this.MIN_SPEED);
                     sprite.setScrollFactor(0);
-                    sprite.setDepth(0);
+                    sprite.setDepth(-1);
                     this.stars.add(sprite);
                 }
             }

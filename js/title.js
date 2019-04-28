@@ -21,7 +21,7 @@ class Title extends Phaser.Scene {
 
         this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.add.bitmapText(WIDTH / 2, HEIGHT / 4, 'EquipmentPro', 'Space Shooterz', 60).setOrigin(0.5);
-        this.space = this.add.bitmapText(WIDTH / 2, 3 * HEIGHT / 4, 'EquipmentPro', 'Press SPACE', 30).setOrigin(0.5);
+        this.space = this.add.bitmapText(WIDTH / 2, 3 * HEIGHT / 4, 'EquipmentPro', 'Press SPACE to begin', 24).setOrigin(0.5);
 
         this.transition = new Transition(this);
         this.transition.in();
@@ -43,7 +43,7 @@ class Title extends Phaser.Scene {
             case GameState.TRANSITION_OUT:
                 if (this.transition.ended) {
                     this.starfield.destroy();
-                    this.scene.start("Level");
+                    this.scene.start("Diary");
                 }
                 break;
         
