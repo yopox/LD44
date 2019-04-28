@@ -10,6 +10,7 @@ class Level extends Phaser.Scene {
         this.map;
         this.speedModif;
         this.victoryX;
+        this.crew;
     }
 
     create() {
@@ -45,9 +46,11 @@ class Level extends Phaser.Scene {
         });
         this.speedModif.sort(function (a, b) { return a.x - b.x });
         this.enemiesTiled.sort(function (a, b) { return a.x - b.x });
-        this.impact.world.setBounds(0, 0, this.map.widthInPixels, HEIGHT);
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, HEIGHT);
         this.victoryX = this.map.widthInPixels - 256;
+
+        // GUI
+        this.crew = this.add.bitmapText(64, 0, 'EquipmentPro', "Crew : " + game.progress.crew, 24).setOrigin(0).setScrollFactor(0);
 
         this.transition = new Transition(this);
         this.transition.in();

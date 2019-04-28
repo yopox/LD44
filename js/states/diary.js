@@ -40,7 +40,7 @@ class Diary extends Phaser.Scene {
         this.keyTab = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB);
 
         this.bitmapText = this.add.bitmapText(48, 16, 'EquipmentPro', "", 24).setOrigin(0);
-        this.space = this.add.bitmapText(WIDTH / 2, HEIGHT - 24, 'EquipmentPro', 'Press SPACE to continue', 24).setOrigin(0.5, 1);
+        this.space = this.add.bitmapText(WIDTH / 2, HEIGHT - 25, 'EquipmentPro', 'Press SPACE to continue', 24).setOrigin(0.5, 1);
         this.space.visible = false;
         this.add.sprite(0, 0, "diary").setOrigin(0);
 
