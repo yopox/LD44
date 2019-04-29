@@ -11,27 +11,26 @@ class Entity extends Phaser.Physics.Arcade.Sprite {
 			case 0:
 				this.life = 1;
 				break;
-		
+
 			case 1:
 				this.life = 3;
-				this.setTint(0xaaff0000);
+				this.setTint(0xccff0000);
 				break;
-			
+
 			case 2:
 				this.life = 6;
-				this.setTint(0xaa0000ff);
+				this.setTint(0xcc0000ff);
 				break;
-			
+
 			case 3:
 				this.life = 10;
-				this.setTint(0xaaff0000);
+				this.setTint(0xccff0000);
 				break;
 		}
 
 	}
 
 }
-
 
 class Player extends Entity {
 
@@ -40,47 +39,40 @@ class Player extends Entity {
 		this.speed = 2500;
 		this.setMaxVelocity(250);
 		this.isShooting = false;
-		this.timerShootDelay = 15;
-		this.timerShootTick = this.timerShootDelay;
+		this.timerShootDelay = game.progress.tears;
+		this.timerShootTick = 0;
 		this.invincibility = 0;
 	}
 
-	moveUp() {
-		this.setAccelerationY(-this.speed);
+	moveX(factor) {
+		this.setAccelerationX(factor * this.speed);
 	}
-	moveDown() {
-		this.setAccelerationY(this.speed);
+
+	moveY(factor) {
+		this.setAccelerationY(factor * this.speed);
 	}
-	moveLeft() {
-		this.setAccelerationX(-this.speed);
-	}
-	moveRight() {
-		this.setAccelerationX(this.speed);
-	}
+
 	stopX() {
 		this.setAccelerationX(0)
 		this.setVelocityX(0);
 	}
+
 	stopY() {
 		this.setAccelerationY(0)
 		this.setVelocityY(0);
 	}
-	update() {
 
+	update() {
 		this.invincibility = this.invincibility > 0 ? this.invincibility - 1 : 0;
 		this.alpha = 1 - Math.floor(this.invincibility / 10) % 2;
 
 		if (this.isShooting) {
-			if (this.timerShootTick < this.timerShootDelay) {
-				this.timerShootTick += 1;
-			}
-			else {
+			this.timerShootTick = (this.timerShootTick + 1) % this.timerShootDelay;
+			if (this.timerShootTick == 0) {
 				var laser = new PlayerLaser(this.scene, this.x + 37 - 24, this.y + 2);
 				this.scene.playerLasers.add(laser);
-				this.timerShootTick = 0;
 			}
 		}
-
 	}
 }
 
@@ -116,7 +108,7 @@ class Chaser extends Entity {
 				Math.sin(angle) * this.speed
 			);
 		} else if (this.state == this.states.ESCAPE) {
-			this.setVelocityX(-150);
+			this.setVelocityX(-100);
 		}
 
 	}
@@ -128,7 +120,6 @@ class Cargo extends Entity {
 		this.flipX = true;
 		this.counter = 0;
 		this.speed = 75;
-		this.life = 1000;
 	}
 
 	update() {
@@ -137,7 +128,6 @@ class Cargo extends Entity {
 			-Math.abs(Math.cos(this.counter / 10)) * this.speed,
 			Math.sin(this.counter / 10) * 3 * this.speed
 		);
-
 	}
 }
 
@@ -146,7 +136,7 @@ class Gunner extends Entity {
 		super(scene, x, y, 'enemy2', null, level);
 		this.flipX = true;
 		this.brake = 50;
-		this.timerShootDelay = 70;
+		this.timerShootDelay = 70 - 10 * level;
 		this.timerShootTick = this.timerShootDelay;
 		this.setVelocityX(this.speed);
 		this.states = {
@@ -154,7 +144,6 @@ class Gunner extends Entity {
 			MAIN: "MAIN"
 		};
 		this.state = this.states.MAIN;
-		// this.setTint(0xff0000);
 
 	}
 	update() {
@@ -183,6 +172,29 @@ class Gunner extends Entity {
 	}
 }
 
+class FixedShooter extends Entity {
+	constructor(scene, x, y, level = 0) {
+		super(scene, x, y, 'enemy2', null, level);
+		this.flipX = true;
+		this.shootAngle = 0;
+		this.delay = 70 - 10 * level;
+		this.shootFrame = 0;
+	}
+	update() {
+
+		this.shootFrame = (this.shootFrame + 1) % this.delay;
+		if (this.shootFrame == 0) {
+			for (let i = 0; i < 4; i++) {
+				let angle = this.shootAngle + Math.PI / 2 * i;
+				var laser = new EnemyLaser(this.scene, this.x - Math.cos(angle) * 29, this.y - 3 + Math.sin(angle) * 3, angle);
+				this.scene.enemiesLasers.add(laser);
+			}
+			this.shootAngle = Math.PI / 4 - this.shootAngle;
+		}
+
+	}
+}
+
 class PlayerLaser extends Entity {
 	constructor(scene, x, y) {
 		super(scene, x, y, "bullet1");
@@ -201,12 +213,12 @@ class EnemyRocket extends Entity {
 }
 
 class EnemyLaser extends Entity {
-	constructor(scene, x, y) {
+	constructor(scene, x, y, angle = 0) {
 		super(scene, x, y, "bullet2");
 		this.flipX = true;
 		this.body.offset.x = scene.speed;
-		this.setVelocityX(-100 - scene.speed * 60);
+		let velocity = -100 - scene.speed * 60;
+		this.setVelocity(velocity * Math.cos(angle), velocity * Math.sin(angle));
+		this.setAngle(180 * angle / Math.PI);
 	}
 }
-
-

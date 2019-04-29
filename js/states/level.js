@@ -116,18 +116,18 @@ class Level extends Phaser.Scene {
             default:
                 // Player x movement
                 if (this.cursors.up.isDown && this.player.y > 18) {
-                    this.player.moveUp();
+                    this.player.moveY(-1);
                 } else if (this.cursors.down.isDown && HEIGHT - this.player.y > 18) {
-                    this.player.moveDown();
+                    this.player.moveY(1);
                 } else {
                     this.player.stopY();
                 }
-                
+
                 // Player y movement
                 if (this.cursors.left.isDown && this.player.x > this.cameras.main.scrollX + 32) {
-                    this.player.moveLeft();
+                    this.player.moveX(-1);
                 } else if (this.cursors.right.isDown && this.player.x < this.cameras.main.scrollX + WIDTH - 32) {
-                    this.player.moveRight();
+                    this.player.moveX(1);
                 } else {
                     this.player.stopX();
                 }
@@ -151,13 +151,19 @@ class Level extends Phaser.Scene {
         });
 
         this.enemiesLasers.getChildren().forEach(laser => {
-            if (laser.x > this.cameras.main.scrollX + WIDTH + 16) {
+            if (laser.x < this.cameras.main.scrollX - 16) {
                 this.enemiesLasers.remove(laser, true, true);
             }
         });
 
         this.enemiesSprite.getChildren().forEach(enemy => {
             enemy.update();
+        });
+
+        this.enemiesSprite.getChildren().forEach(enemy => {
+            if (enemy.x < this.cameras.main.scrollX - 16) {
+                this.enemiesSprite.remove(enemy, true, true);
+            }
         });
 
         // Winning condition
@@ -207,15 +213,19 @@ class Level extends Phaser.Scene {
         if (this.mapEnemies.length && this.mapEnemies[0].x < this.cameras.main.scrollX + WIDTH + 32) {
             var foe = this.mapEnemies.shift();
             let level = parseInt(0 + foe.type, 10);
+            
             switch (foe.gid) {
-                case 5:
-                    var enemy = new Chaser(this, foe.x, foe.y, level);
-                    break;
                 case 6:
                     var enemy = new Cargo(this, foe.x, foe.y, level);
                     break;
                 case 7:
                     var enemy = new Gunner(this, foe.x, foe.y, level);
+                    break;
+                case 9:
+                    var enemy = new FixedShooter(this, foe.x, foe.y, level);
+                    break;
+                default:
+                    var enemy = new Chaser(this, foe.x, foe.y, level);
                     break;
             }
             this.enemiesSprite.add(enemy)
