@@ -77,8 +77,8 @@ class Diary extends Phaser.Scene {
 
                 if (this.keyTab.isDown) {
                     this.bitmapText.text = this.fullText;
-                    this.gState = GameState.TRANSITION_OUT;
-                    this.transition.out();
+                    this.pos = this.fullText.length;
+                    this.space.visible = true;
                 }
 
                 break;
