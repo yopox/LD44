@@ -145,7 +145,7 @@ class Level extends Phaser.Scene {
                 // Player y movement
                 if (this.cursors.left.isDown && this.player.x > this.cameras.main.scrollX + 32) {
                     this.player.moveX(-1);
-                } else if (this.cursors.right.isDown && this.player.x < this.cameras.main.scrollX + WIDTH - 32) {
+                } else if (this.cursors.right.isDown && this.player.x < this.cameras.main.scrollX + WIDTH / 2) {
                     this.player.moveX(1);
                 } else {
                     this.player.stopX();
@@ -206,7 +206,7 @@ class Level extends Phaser.Scene {
     updateSpeed() {
         if (this.speedModif.length && this.speedModif[0].x < this.player.x) {
             var sM = this.speedModif.shift();
-            var speed = (sM.gid - 1) * 2;
+            var speed = (sM.gid - 1) * 2 + 0.1;
             this.targetSpeed = speed;
         }
 

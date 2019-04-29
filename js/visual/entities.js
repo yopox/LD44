@@ -124,7 +124,7 @@ class Chaser extends Entity {
 	constructor(scene, x, y, level = 0) {
 		super(scene, x, y, 'enemy1', null, level);
 		this.flipX = true;
-		this.speed = 200;
+		this.speed = 150;
 		this.states = {
 			MOVE_DOWN: "MOVE_DOWN",
 			CHASE: "CHASE",
@@ -291,7 +291,8 @@ class FixedShooter extends Entity {
 			for (let i = 0; i < 4; i++) {
 				let angle = this.shootAngle + Math.PI / 2 * i;
 				var laser = new EnemyLaser(this.scene, this.x - Math.cos(angle) * 29, this.y - 3 + Math.sin(angle) * 3, angle);
-				this.scene.enemiesLasers.add(laser);
+				if (!angle == Math.PI)
+					this.scene.enemiesLasers.add(laser);
 			}
 			this.shootAngle = Math.PI / 4 - this.shootAngle;
 		}

@@ -33,16 +33,16 @@ class Shop extends Phaser.Scene {
         this.pos = 0;
         this.textFrame = 0;
         this.text = "";
-        this.fullText = "Welcome to my shop !\nI hope we can do business together...\nI smell fresh slaves !"
-        this.bitmapText = this.add.bitmapText(180, 55, 'EquipmentPro', '', 12).setOrigin(0);
+        this.fullText = "Welcome to my shop !\nI hope we can do business\ntogether...\nI smell fresh slaves !"
+        this.bitmapText = this.add.bitmapText(432, 240, 'EquipmentPro', '', 12).setOrigin(0);
 
         // Choices
         for (let i = 0; i < 4; i++) {
-            this.add.bitmapText(114, 160 + 32 * i, 'EquipmentPro', 'Upgrade motor (-3 crew)', 12).setOrigin(0);
-            this.add.bitmapText(114 + 256, 160 + 32 * i, 'EquipmentPro', 'Downgrade motor (+2 crew)', 12).setOrigin(0);
+            this.add.bitmapText(16, 183 + 32 * i, 'EquipmentPro', 'Upgrade motor (-3 crew)', 12).setOrigin(0);
+            this.add.bitmapText(213, 183 + 32 * i, 'EquipmentPro', 'Downgrade motor (+2 crew)', 12).setOrigin(0);
         }
-        this.add.bitmapText(114, 160 + 32 * 4, 'EquipmentPro', 'Leave shop', 12).setOrigin(0);
-        this.add.bitmapText(114 + 256, 160 + 32 * 4, 'EquipmentPro', 'Remaining crew : 10', 12).setOrigin(0);
+        this.add.bitmapText(16, 180 + 32 * 5, 'EquipmentPro', 'Leave shop', 12).setOrigin(0);
+        this.add.bitmapText(527, 353, 'EquipmentPro', 'Remaining crew : 10', 12).setOrigin(0.5);
 
         // Cursor
         this.cursor = [0, 0];
