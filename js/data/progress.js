@@ -1,7 +1,7 @@
 var Orientations = {
     NEUTRAL: 1,
-    EVIL: 2,
-    SAVIOR: 3,
+    BAD: 2,
+    GOOD: 3,
 };
 
 class Progress {

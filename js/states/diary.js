@@ -40,8 +40,7 @@ class Diary extends Phaser.Scene {
         this.keyTab = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB);
 
         this.bitmapText = this.add.bitmapText(32, 12, 'EquipmentPro', "", 24).setOrigin(0);
-        this.space = this.add.bitmapText(WIDTH / 2, HEIGHT - 23, 'EquipmentPro', 'Press SPACE to continue', 24).setOrigin(0.5, 1);
-        this.space.visible = false;
+        this.space = this.add.bitmapText(WIDTH / 2, HEIGHT - 23, 'EquipmentPro', 'Press TAB to skip', 24).setOrigin(0.5, 1);
         this.add.sprite(0, 0, "diary").setOrigin(0);
 
         this.transition = new Transition(this);
@@ -49,6 +48,8 @@ class Diary extends Phaser.Scene {
     }
 
     update() {
+        this.frame = (this.frame + 1) % 120;
+        this.space.alpha = (60 - Math.abs(this.frame - 60)) / 60;
 
         switch (this.gState) {
             case GameState.TRANSITION_IN:
@@ -66,9 +67,6 @@ class Diary extends Phaser.Scene {
                 break;
 
             default:
-                this.frame = (this.frame + 1) % 120;
-                this.space.alpha = (60 - Math.abs(this.frame - 60)) / 60;
-
                 this.textFrame = this.textFrame + 1;
                 if (this.textFrame == this.TEXT_SPEED) {
                     this.textFrame = 0;
@@ -78,9 +76,8 @@ class Diary extends Phaser.Scene {
                 if (this.keyTab.isDown) {
                     this.bitmapText.text = this.fullText;
                     this.pos = this.fullText.length;
-                    this.space.visible = true;
+                    this.space.text = "Press SPACE to continue";
                 }
-
                 break;
         }
 
@@ -107,9 +104,7 @@ class Diary extends Phaser.Scene {
             this.bitmapText.text = this.text;
             this.pos++;
             if (this.pos == this.fullText.length) {
-                this.space.visible = true;
-                this.space.alpha = 0;
-                this.frame = 0;
+                this.space.text = "Press SPACE to continue";
             }
         } else {
             if (this.keySpace.isDown) {

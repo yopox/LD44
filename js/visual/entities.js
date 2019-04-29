@@ -33,7 +33,7 @@ class Entity extends Phaser.Physics.Arcade.Sprite {
 			if (this.alpha == 0) {
 				this.setActive(false);
 			} else {
-				this.alpha = this.alpha - 0.1;
+				this.alpha = this.alpha - 0.2;
 			}
 		}
 	}
@@ -88,12 +88,10 @@ class Player extends Entity {
 		this.invincibility = this.invincibility > 0 ? this.invincibility - 1 : 0;
 		this.alpha = 1 - Math.floor(this.invincibility / 10) % 2;
 
-		if (this.isShooting) {
-			this.timerShootTick = (this.timerShootTick + 1) % this.timerShootDelay;
-			if (this.timerShootTick == 0) {
-				var laser = new PlayerLaser(this.scene, this.x + 37 - 24, this.y + 2);
-				this.scene.playerLasers.add(laser);
-			}
+		this.timerShootTick = (this.timerShootTick + 1) % this.timerShootDelay;
+		if (this.timerShootTick == 0) {
+			var laser = new PlayerLaser(this.scene, this.x + 37 - 24, this.y + 2);
+			this.scene.playerLasers.add(laser);
 		}
 	}
 }
@@ -103,6 +101,7 @@ class Asteroid extends Entity {
 		super(scene, x, y, 'asteroids', type);
 		this.isAsteroid = true;
 		this.body.setMass(4);
+		this.life = 15;
 		switch (type) {
 			case 0:
 				this.body.setSize(28, 26, true);

@@ -150,8 +150,6 @@ class Level extends Phaser.Scene {
                 } else {
                     this.player.stopX();
                 }
-
-                this.player.isShooting = this.cursors.space.isDown;
                 this.player.update()
                 break;
         }
