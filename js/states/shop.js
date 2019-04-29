@@ -2,6 +2,7 @@ class Shop extends Phaser.Scene {
 
     constructor() {
         super('Shop');
+        this.NAMES = ['Motor', 'Cadency', 'Damage', 'Shots No.'];
         this.transition;
         this.gState;
         this.bgm;
@@ -14,8 +15,12 @@ class Shop extends Phaser.Scene {
         this.textFrame;
         this.TEXT_SPEED = 2;
         this.cursor;
-        this.cursorText;
+        this.cursorSprite;
         this.cooldown;
+
+        this.remainingCrew;
+        this.upgrade;
+        this.downgrade;
 
         this.keySpace;
         this.cursors;
@@ -37,16 +42,18 @@ class Shop extends Phaser.Scene {
         this.bitmapText = this.add.bitmapText(432, 240, 'EquipmentPro', '', 12).setOrigin(0);
 
         // Choices
+        this.upgrade = [];
+        this.downgrade = [];
         for (let i = 0; i < 4; i++) {
-            this.add.bitmapText(16, 183 + 32 * i, 'EquipmentPro', 'Upgrade motor (-3 crew)', 12).setOrigin(0);
-            this.add.bitmapText(213, 183 + 32 * i, 'EquipmentPro', 'Downgrade motor (+2 crew)', 12).setOrigin(0);
+            this.upgrade.push(this.add.bitmapText(89, 183 + 32 * i, 'EquipmentPro', this.NAMES[i] + ' UP', 12).setOrigin(0.5, 0));
+            this.downgrade.push(this.add.bitmapText(296, 183 + 32 * i, 'EquipmentPro', this.NAMES[i] + ' DOWN', 12).setOrigin(0.5, 0));
         }
-        this.add.bitmapText(16, 180 + 32 * 5, 'EquipmentPro', 'Leave shop', 12).setOrigin(0);
-        this.add.bitmapText(527, 353, 'EquipmentPro', 'Remaining crew : 10', 12).setOrigin(0.5);
+        this.add.bitmapText(89, 353, 'EquipmentPro', 'Leave shop', 12).setOrigin(0.5);
+        this.remainingCrew = this.add.bitmapText(527, 352, 'EquipmentPro', 'Remaining crew : 10', 12).setOrigin(0.5);
 
         // Cursor
         this.cursor = [0, 0];
-        this.cursorText = this.add.bitmapText(114 - 24, 160, 'EquipmentPro', '->', 12).setOrigin(0);
+        this.cursorSprite = this.add.sprite(89, 180, 'shopCursor').setOrigin(0.5, 0);
         this.cooldown = 0;
 
         // Keyboard
@@ -86,15 +93,30 @@ class Shop extends Phaser.Scene {
                     this.cooldown = 8;
                     if (this.cursors.down.isDown) {
                         this.cursor[1] = mod(this.cursor[1] + 1, 5);
+                        if (this.cursor[0] == 1 && this.cursor[1] == 4) {
+                            this.cursor[1] = 3;
+                        }
                     } else if (this.cursors.up.isDown) {
                         this.cursor[1] = mod(this.cursor[1] - 1, 5);
+                        if (this.cursor[0] == 1 && this.cursor[1] == 4) {
+                            this.cursor[1] = 0;
+                        }
                     } else if (this.cursors.left.isDown) {
                         this.cursor[0] = mod(this.cursor[0] - 1, 2);
+                        if (this.cursor[0] == 1 && this.cursor[1] == 4) {
+                            this.cursor[0] = 0;
+                        }
                     } else if (this.cursors.right.isDown) {
                         this.cursor[0] = mod(this.cursor[0] + 1, 2);
+                        if (this.cursor[0] == 1 && this.cursor[1] == 4) {
+                            this.cursor[0] = 0;
+                        }
                     }
-                    this.cursorText.x = 114 - 24 + 256 * this.cursor[0];
-                    this.cursorText.y = 160 + 32 * this.cursor[1];
+                    this.cursorSprite.x = 89 + 207 * this.cursor[0];
+                    this.cursorSprite.y = 180 + 32 * this.cursor[1];
+                    if (this.cursor[1] == 4) {
+                        this.cursorSprite.y = 180 + 32 * (this.cursor[1] + 1);
+                    }
                 } else {
                     this.cooldown--;
                 }
@@ -107,7 +129,6 @@ class Shop extends Phaser.Scene {
                         this.game.progress.boughtSomething = true;
                     }
                 }
-
                 break;
         }
 

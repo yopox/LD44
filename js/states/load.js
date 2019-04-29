@@ -18,6 +18,7 @@ class Load extends Phaser.Scene {
         this.load.spritesheet('cosmonaut', 'assets/graphics/cosmonaut.png', { frameWidth: 12, frameHeight: 12 });
         this.load.spritesheet('asteroids', 'assets/graphics/asteroids.png', { frameWidth: 70, frameHeight: 70 });
         this.load.image('ship', 'assets/graphics/jet.png');
+        this.load.image('shopCursor', 'assets/graphics/shopCursor.png');
         this.load.bitmapFont('EquipmentPro', 'assets/font/equipmentpro_medium_12.png', 'assets/font/equipmentpro_medium_12.fnt');
 
         for (let i = 1; i < 6; i++) {
