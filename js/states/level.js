@@ -2,6 +2,9 @@ class Level extends Phaser.Scene {
 
     constructor() {
         super('Level');
+        this.LEVEL_BGM = ['easy', 'medium', 'hard', 'medium', 'easy', 'hard'];
+
+        this.levelId;
         this.starfield;
         this.gState;
         this.transition;
@@ -29,13 +32,17 @@ class Level extends Phaser.Scene {
         this.bonusSprite;
     }
 
+    init(data) {
+        this.levelId = data.id;
+    }
+
     create() {
         this.gState = GameState.TRANSITION_IN;
         this.speed = 30;
         this.targetSpeed = 30;
         this.starfield = new Starfield(this);
         this.cursors = this.input.keyboard.createCursorKeys();
-        this.bgm = this.sound.add('hard');
+        this.bgm = this.sound.add(this.LEVEL_BGM[this.levelId]);
         this.bgm.setVolume(mute ? 0 : 0.75);
         this.bgm.setLoop(true);
         this.bgm.play();
@@ -49,7 +56,7 @@ class Level extends Phaser.Scene {
 
 
         // Tilemap loading
-        this.map = this.make.tilemap({ key: 'map' });
+        this.map = this.make.tilemap({ key: 'map' + (this.levelId + 1) });
 
         var mapObjects = this.map.getObjectLayer("objects").objects;
         this.speedModif = [];
@@ -70,7 +77,7 @@ class Level extends Phaser.Scene {
         this.mapBonus.sort(function (a, b) { return a.x - b.x });
 
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, HEIGHT);
-        this.victoryX = this.map.widthInPixels - 256;
+        this.victoryX = this.map.widthInPixels - WIDTH;
 
         this.playerLasers = this.add.group();
         this.enemiesLasers = this.add.group();
@@ -117,6 +124,7 @@ class Level extends Phaser.Scene {
                 if (this.transition.ended) {
                     this.bgm.stop();
                     this.resetScene();
+                    this.game.progress.visited[this.levelId] = true;
                     this.scene.start("Diary");
                     return false;
                 }
@@ -168,7 +176,7 @@ class Level extends Phaser.Scene {
         this.enemiesSprite.getChildren().forEach(enemy => {
             enemy.update();
         });
-        
+
         this.enemiesSprite.getChildren().forEach(enemy => {
             if (enemy.x < this.cameras.main.scrollX - 16) {
                 this.enemiesSprite.remove(enemy, true, true);
@@ -257,7 +265,6 @@ class Level extends Phaser.Scene {
             let obj = this.mapBonus.shift();
             var b = new Bonus(this, obj.x, obj.y);
             this.bonusSprite.add(b);
-            console.log(b);
         }
     }
 

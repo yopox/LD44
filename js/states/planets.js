@@ -41,7 +41,6 @@ class Planets extends Phaser.Scene {
         this.cursor = this.add.sprite(0, 0, 'cursor', 0).setOrigin(0.5);
         this.updateCursor();
         this.cooldown = 0;
-        
 
         this.transition = new Transition(this);
         this.transition.in();
@@ -67,13 +66,13 @@ class Planets extends Phaser.Scene {
                     if (this.position == 0) {
                         this.scene.start("Shop");
                     } else {
-                        this.scene.start("Level");
+                        this.scene.start("Level", {id: this.position - 1});
                     }
                 }
                 break;
 
             default:
-                if (this.keySpace.isDown) {
+                if (this.keySpace.isDown && !(this.position && this.game.progress.visited[this.position - 1])) {
                     this.gState = GameState.TRANSITION_OUT;
                     this.transition.out();
                 } else if (this.cursors.right.isDown && !this.cooldown) {
@@ -94,6 +93,9 @@ class Planets extends Phaser.Scene {
         this.cursor.x = pos[0];
         this.cursor.y = pos[1];
         this.bitmapText.text = this.DESCRIPTIONS[this.position];
+        if (this.position > 0 && this.game.progress.visited[this.position - 1]) {
+            this.bitmapText.text += " - DONE";
+        }
     }
 
 }

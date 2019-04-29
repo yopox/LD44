@@ -50,7 +50,8 @@ class Title extends Phaser.Scene {
                 if (this.transition.ended) {
                     this.bgm.stop();
                     this.starfield.destroy();
-                    this.scene.start("Diary");
+                    this.scene.start(this.game.progress.resume ? "Planets" : "Diary");
+                    this.game.progress.resume = true;
                 }
                 break;
         

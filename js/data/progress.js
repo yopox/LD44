@@ -6,6 +6,7 @@ class Progress {
         this.tears = 30;
         this.visited = [false, false, false, false, false, false];
         this.shop = [false, false];
+        this.resume = false;
     }
 
 }

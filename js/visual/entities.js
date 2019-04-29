@@ -6,6 +6,7 @@ class Entity extends Phaser.Physics.Arcade.Sprite {
 		scene.add.existing(this);
 		scene.physics.add.existing(this);
 		this.setMaxVelocity(400);
+		this.killFrames = 0;
 
 		switch (level) {
 			case 0:
@@ -24,6 +25,9 @@ class Entity extends Phaser.Physics.Arcade.Sprite {
 				this.setTint(0xccff0000);
 				break;
 		}
+	}
+
+	update() {
 
 	}
 

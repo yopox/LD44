@@ -1,6 +1,8 @@
 const WIDTH = 640;
 const HEIGHT = 380;
 
+var zoomLevel = (window.innerWidth >= 1280 && window.innerHeight >= 760) ? 2 : 1;
+
 var config = {
     type: Phaser.AUTO,
     width: WIDTH,
@@ -12,13 +14,14 @@ var config = {
             // debug: true
         }
     },
-    zoom: 2,
+    zoom: zoomLevel,
+    pixelArt: true,
     scene: [Load, Title, Diary, Planets, Shop, Level]
 };
 
 var game = new Phaser.Game(config);
 game.progress = new Progress();
-var mute = true;
+var mute = false;
 
 var GameState = {
     TRANSITION_IN: 1,
