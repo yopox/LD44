@@ -15,11 +15,11 @@ class Diary extends Phaser.Scene {
         this.textFrame;
         this.typewriter;
         this.bgm;
-        this.TEXT_SPEED = 5;
+        this.TEXT_SPEED = 4;
     }
 
     create() {
-        this.fullText = "DIARY - DAY ONE;\nI was sent on a strange system...\nI hope everything will be fine !";
+        this.fullText = getLog(this.game.progress);
         this.text = "";
         this.pos = 0;
         this.frame = 0;
@@ -39,8 +39,8 @@ class Diary extends Phaser.Scene {
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.keyTab = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB);
 
-        this.bitmapText = this.add.bitmapText(48, 16, 'EquipmentPro', "", 24).setOrigin(0);
-        this.space = this.add.bitmapText(WIDTH / 2, HEIGHT - 25, 'EquipmentPro', 'Press SPACE to continue', 24).setOrigin(0.5, 1);
+        this.bitmapText = this.add.bitmapText(32, 12, 'EquipmentPro', "", 24).setOrigin(0);
+        this.space = this.add.bitmapText(WIDTH / 2, HEIGHT - 23, 'EquipmentPro', 'Press SPACE to continue', 24).setOrigin(0.5, 1);
         this.space.visible = false;
         this.add.sprite(0, 0, "diary").setOrigin(0);
 
@@ -95,12 +95,13 @@ class Diary extends Phaser.Scene {
             }
             switch (newChar) {
                 case '.':
+                case ':':
                     this.textFrame = -3 * this.TEXT_SPEED;
                     break;
 
                 case ' ':
                 case '\n':
-                    this.textFrame = -this.TEXT_SPEED;
+                    this.textFrame = -this.TEXT_SPEED / 2;
                     break;
             }
             this.bitmapText.text = this.text;

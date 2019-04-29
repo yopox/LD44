@@ -55,6 +55,11 @@ class Shop extends Phaser.Scene {
 
         this.transition = new Transition(this);
         this.transition.in();
+
+        // Game progress
+        if (!this.game.progress.firstShopVisit[0]) {
+            this.game.progress.firstShopVisit = [true, true];
+        }
     }
 
     update() {
@@ -70,7 +75,7 @@ class Shop extends Phaser.Scene {
                 this.bgm.volume = Math.max(0, this.bgm.volume - 0.015);
                 if (this.transition.ended) {
                     this.bgm.stop();
-                    this.scene.start("Planets");
+                    this.scene.start("Diary");
                 }
                 break;
 
@@ -98,6 +103,8 @@ class Shop extends Phaser.Scene {
                     if (this.cursor[0] == 0 && this.cursor[1] == 4) {
                         this.gState = GameState.TRANSITION_OUT;
                         this.transition.out();
+                    } else {
+                        this.game.progress.boughtSomething = true;
                     }
                 }
 

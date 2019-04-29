@@ -68,8 +68,10 @@ class Level extends Phaser.Scene {
                 this.speedModif.push(obj);
             } else if (obj.gid >= 5 && obj.gid < 11) {
                 this.mapEnemies.push(obj);
-            } else {
+            } else if (obj.gid == 11) {
                 this.mapBonus.push(obj);
+            } else {
+                this.mapEnemies.push(obj);
             }
         });
         this.speedModif.sort(function (a, b) { return a.x - b.x });
@@ -254,6 +256,9 @@ class Level extends Phaser.Scene {
                 case 10:
                     var enemy = new Cargo2(this, foe.x, foe.y, level);
                     break;
+                default:
+                    var enemy = new Asteroid(this, foe.x, foe.y, foe.gid - 12);
+                    break;
             }
             this.enemiesSprite.add(enemy)
         }
@@ -284,14 +289,16 @@ class Level extends Phaser.Scene {
                 this.transition.out();
             }
         }
-        enemy.destroy();
+        if (!enemy.isAsteroid) {
+            enemy.destroy();
+        }
     }
 
     // Overlap callback when a laser touches an enemy
     touchEnemy(enemy, laser) {
         laser.destroy();
         enemy.life -= this.game.progress.damage;;
-        if (enemy.life == 0) {
+        if (enemy.life == 0 && !enemy.isAsteroid) {
             enemy.destroy();
         }
     }

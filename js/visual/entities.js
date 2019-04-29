@@ -7,6 +7,7 @@ class Entity extends Phaser.Physics.Arcade.Sprite {
 		scene.physics.add.existing(this);
 		this.setMaxVelocity(400);
 		this.killFrames = 0;
+		this.isAsteroid = false;
 
 		switch (level) {
 			case 0:
@@ -88,6 +89,28 @@ class Player extends Entity {
 			}
 		}
 	}
+}
+
+class Asteroid extends Entity {
+	constructor(scene, x, y, type = 0) {
+		super(scene, x, y, 'asteroids', type);
+		this.isAsteroid = true;
+		switch (type) {
+			case 0:
+				this.body.setSize(28, 26, true);
+				break;
+			case 1:
+				this.body.setSize(17, 11, true);
+				break;
+			case 2:
+				this.body.setSize(11, 27, true);
+				break;
+			case 3:
+				this.body.setSize(16, 10, true);
+				break;
+		}
+	}
+
 }
 
 class Chaser extends Entity {
