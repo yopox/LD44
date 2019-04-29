@@ -180,7 +180,7 @@ class Level extends Phaser.Scene {
         });
 
         this.enemiesSprite.getChildren().forEach(enemy => {
-            if (enemy.x < this.cameras.main.scrollX - 16) {
+            if (enemy.x < this.cameras.main.scrollX - 16 || !enemy.active) {
                 this.enemiesSprite.remove(enemy, true, true);
             }
         });
@@ -290,17 +290,14 @@ class Level extends Phaser.Scene {
             }
         }
         if (!enemy.isAsteroid) {
-            enemy.destroy();
+            enemy.life -= 100;
         }
     }
 
     // Overlap callback when a laser touches an enemy
     touchEnemy(enemy, laser) {
         laser.destroy();
-        enemy.life -= this.game.progress.damage;;
-        if (enemy.life == 0 && !enemy.isAsteroid) {
-            enemy.destroy();
-        }
+        enemy.life -= this.game.progress.damage;
     }
 
     // Called when the player collects a bonus

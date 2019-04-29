@@ -1,3 +1,9 @@
+var Orientations = {
+    NEUTRAL: 1,
+    EVIL: 2,
+    SAVIOR: 3,
+};
+
 class Progress {
 
     constructor() {
@@ -9,7 +15,7 @@ class Progress {
         this.resume = false;
         this.firstShopVisit = [false, false];
         this.boughtSomething = false;
-
+        this.orientation = Orientations.NEUTRAL;
         this.nextMessage;
     }
 

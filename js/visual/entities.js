@@ -29,7 +29,13 @@ class Entity extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	update() {
-
+		if (this.life == 0) {
+			if (this.alpha == 0) {
+				this.setActive(false);
+			} else {
+				this.alpha = this.alpha - 0.1;
+			}
+		}
 	}
 
 }
@@ -44,6 +50,7 @@ class Bonus extends Entity {
 	update() {
 		this.counter += 1;
 		this.setVelocityY(Math.cos(this.counter / 30) * this.speed);
+		this.setFrame(Math.floor(Math.pow(Math.cos(this.counter / 20), 2) * 3));
 	}
 }
 
@@ -95,6 +102,7 @@ class Asteroid extends Entity {
 	constructor(scene, x, y, type = 0) {
 		super(scene, x, y, 'asteroids', type);
 		this.isAsteroid = true;
+		this.body.setMass(4);
 		switch (type) {
 			case 0:
 				this.body.setSize(28, 26, true);
@@ -127,7 +135,7 @@ class Chaser extends Entity {
 	}
 
 	update() {
-
+		super.update();
 		if (this.scene.player.x > this.x) {
 			this.state = this.states.ESCAPE;
 		} else if (this.scene.player.x > this.x - WIDTH / 2) {
@@ -160,6 +168,7 @@ class Cargo extends Entity {
 	}
 
 	update() {
+		super.update();
 		this.counter += 1;
 		this.setVelocity(
 			-Math.abs(Math.cos(this.counter / 10)) * this.speed,
@@ -178,6 +187,7 @@ class Cargo2 extends Entity {
 	}
 
 	update() {
+		super.update();
 		this.counter += 1;
 		this.setVelocityY(Math.cos(this.counter / 10) * 3 * this.speed);
 	}
@@ -199,7 +209,7 @@ class Gunner extends Entity {
 
 	}
 	update() {
-
+		super.update();
 		if (this.scene.player.x < this.x) {
 			this.state = this.states.BRAKE;
 		} else {
@@ -240,7 +250,7 @@ class DualShooter extends Entity {
 
 	}
 	update() {
-
+		super.update();
 		if (this.scene.player.x < this.x) {
 			this.state = this.states.BRAKE;
 		} else {
@@ -276,7 +286,7 @@ class FixedShooter extends Entity {
 		this.shootFrame = 0;
 	}
 	update() {
-
+		super.update();
 		this.shootFrame = (this.shootFrame + 1) % this.delay;
 		if (this.shootFrame == 0) {
 			for (let i = 0; i < 4; i++) {
