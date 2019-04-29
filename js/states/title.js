@@ -8,6 +8,7 @@ class Title extends Phaser.Scene {
         this.starfield;
         this.transition;
         this.gState;
+        this.bgm;
     }
 
     init() {
@@ -16,6 +17,10 @@ class Title extends Phaser.Scene {
     create() {
         this.gState = GameState.TRANSITION_IN;
         this.frame = 0;
+        this.bgm = this.sound.add('planets');
+        this.bgm.setVolume(mute ? 0 : 0.75);
+        this.bgm.setLoop(true);
+        this.bgm.play();
 
         this.starfield = new Starfield(this);
 
@@ -41,7 +46,9 @@ class Title extends Phaser.Scene {
                 break;
             
             case GameState.TRANSITION_OUT:
+                this.bgm.volume = Math.max(0, this.bgm.volume - 0.015);
                 if (this.transition.ended) {
+                    this.bgm.stop();
                     this.starfield.destroy();
                     this.scene.start("Diary");
                 }

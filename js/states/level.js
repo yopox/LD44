@@ -11,6 +11,7 @@ class Level extends Phaser.Scene {
         this.speedModif;
         this.victoryX;
         this.crew;
+        this.bgm;
     }
 
     create() {
@@ -19,6 +20,10 @@ class Level extends Phaser.Scene {
         this.targetSpeed = 30;
         this.starfield = new Starfield(this);
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.bgm = this.sound.add('hard');
+        this.bgm.setVolume(mute ? 0 : 0.75);
+        this.bgm.setLoop(true);
+        this.bgm.play();
 
         this.player = new Player(
             this,
@@ -59,18 +64,8 @@ class Level extends Phaser.Scene {
         this.enemiesSprite = this.add.group();
 
         this.physics.add.overlap(this.enemiesSprite, this.playerLasers, this.touchEnemy, null, this);
-
-        this.physics.add.overlap(this.player, this.enemiesLasers, this.getHit,
-            function (player, enemy) {
-                return player.invincibility == 0;
-            }, this);
-            
-        this.physics.add.collider(this.player, this.enemiesSprite, this.getHit,
-            function (player, enemy) {
-                return player.invincibility == 0;
-            }, this);
-
-
+        this.physics.add.overlap(this.player, this.enemiesLasers, this.getHit, this.canTouchEnemy, this);
+        this.physics.add.collider(this.player, this.enemiesSprite, this.getHit, this.canTouchEnemy, this);
 
     }
 
@@ -96,14 +91,11 @@ class Level extends Phaser.Scene {
                 break;
 
             case GameState.TRANSITION_OUT:
+                this.bgm.volume = Math.max(0, this.bgm.volume - 0.015);
                 if (this.transition.ended) {
+                    this.bgm.stop();
                     this.resetScene();
-                    if (this.game.progress.crew > 0) {
-                        this.scene.start("Title");
-                    }
-                    else {
-                        this.scene.start("Diary");
-                    }
+                    this.scene.start("Diary");
                     return false;
                 }
                 break;
@@ -152,10 +144,6 @@ class Level extends Phaser.Scene {
         });
 
         this.enemiesLasers.getChildren().forEach(laser => {
-            laser.x += this.speed;
-        });
-
-        this.enemiesLasers.getChildren().forEach(laser => {
             if (laser.x > this.cameras.main.scrollX + WIDTH + 16) {
                 this.enemiesLasers.remove(laser, true, true);
             }
@@ -183,7 +171,7 @@ class Level extends Phaser.Scene {
     updateSpeed() {
         if (this.speedModif.length && this.speedModif[0].x < this.player.x) {
             var sM = this.speedModif.shift();
-            var speed = (sM.gid - 1) * 4;
+            var speed = (sM.gid - 1) * 2;
             this.targetSpeed = speed;
         }
 
@@ -201,65 +189,54 @@ class Level extends Phaser.Scene {
         this.playerLasers.getChildren().forEach(laser => {
             laser.body.offset.x = this.speed;
         });
+        this.enemiesLasers.getChildren().forEach(laser => {
+            laser.body.offset.x = this.speed;
+        });
     }
 
     updateEnemies() {
 
-        if (this.enemiesTiled.length && this.enemiesTiled[0].x < this.player.x + 2 * WIDTH) {
-            // console.log(this.enemiesTiled[0].x)
+        if (this.enemiesTiled.length && this.enemiesTiled[0].x < this.cameras.main.scrollX + WIDTH + 64) {
             var enemyBeam = this.enemiesTiled.shift();
 
             switch (enemyBeam.gid) {
                 case 5:
-                    var enemy = new Chaser(
-                    this,
-                    enemyBeam.x,
-                    enemyBeam.y,
-                    1);
+                    var enemy = new Chaser(this, enemyBeam.x, enemyBeam.y, Math.floor(Math.random() * 4));
                     break;
                 case 6:
-                    var enemy = new Cargo(
-                    this,
-                    enemyBeam.x,
-                    enemyBeam.y,
-                    3);
+                    var enemy = new Cargo(this, enemyBeam.x, enemyBeam.y, Math.floor(Math.random() * 4));
                     break;
                 case 7:
-                    var enemy = new Gunner(
-                    this,
-                    enemyBeam.x,
-                    enemyBeam.y,
-                    1);
+                    var enemy = new Gunner(this, enemyBeam.x, enemyBeam.y, Math.floor(Math.random() * 4));
                     break;
-
             }
-            
-            
+            this.enemiesSprite.add(enemy)
+        }
 
-                this.enemiesSprite.add(enemy)
-            }
-        
     }
 
     getHit(player, enemy) {
-        this.game.progress.crew -= 1;
         if (this.game.progress.crew > 0) {
+            this.game.progress.crew -= 1;
             player.invincibility = 60;
             this.crew.text = "Crew : " + this.game.progress.crew;
-        }
-        else {
-            
-            this.gState = GameState.TRANSITION_OUT;
-            this.transition.out();
+            if (this.game.progress.crew == 0) {
+                this.gState = GameState.TRANSITION_OUT;
+                this.transition.out();
+            }
         }
         enemy.destroy();
-        
+
 
     }
 
-    touchEnemy(enemy, laser){
+    canTouchEnemy(player, x) {
+        return player.invincibility == 0;
+    }
+
+    touchEnemy(enemy, laser) {
         laser.destroy();
-        enemy.life -= 1;
+        enemy.life -= this.game.progress.damage;;
         if (enemy.life == 0) {
             enemy.destroy();
         }

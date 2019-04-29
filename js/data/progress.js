@@ -1,7 +1,8 @@
 class Progress {
 
     constructor() {
-        this.crew = 5;
+        this.crew = 10;
+        this.damage = 1;
     }
 
 }

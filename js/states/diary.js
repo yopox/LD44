@@ -27,7 +27,7 @@ class Diary extends Phaser.Scene {
         this.gState = GameState.TRANSITION_IN;
         this.typewriter = [];
         this.bgm = this.sound.add('diary');
-        this.bgm.setVolume(0.6);
+        this.bgm.setVolume(mute ? 0 : 0.75);
         this.bgm.setLoop(true);
         this.bgm.play();
 

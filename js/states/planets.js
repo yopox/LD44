@@ -11,11 +11,11 @@ class Planets extends Phaser.Scene {
         this.DESCRIPTIONS = [
             "SHOP",
             "PLANET X54 - EASY",
-            "LEVEL 3 - EASY",
-            "LEVEL 4 - HARD",
-            "LEVEL 5 - EASY",
-            "LEVEL 6 - EASY",
-            "LEVEL 7 - EASY",
+            "PLANET E20 - MEDIUM",
+            "SUN - SLAVE MAFIA HIDEOUT - HARD",
+            "PLANET R85 - MEDIUM",
+            "PLANET G99 - EASY",
+            "PLANET Y42 - EASY",
         ]
         this.position;
         this.cursors;
@@ -27,7 +27,7 @@ class Planets extends Phaser.Scene {
         this.gState = GameState.TRANSITION_IN;
         this.frame = 0;
         this.bgm = this.sound.add('planets');
-        this.bgm.setVolume(0.6);
+        this.bgm.setVolume(mute ? 0 : 0.75);
         this.bgm.setLoop(true);
         this.bgm.play();
         

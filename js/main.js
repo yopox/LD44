@@ -8,7 +8,7 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: 0
+            gravity: 0,
             // debug: true
         }
     },
@@ -18,6 +18,7 @@ var config = {
 
 var game = new Phaser.Game(config);
 game.progress = new Progress();
+var mute = true;
 
 var GameState = {
     TRANSITION_IN: 1,

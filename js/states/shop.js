@@ -12,7 +12,7 @@ class Shop extends Phaser.Scene {
         this.text;
         this.fullText;
         this.textFrame;
-        this.TEXT_SPEED = 4;
+        this.TEXT_SPEED = 2;
         this.cursor;
         this.cursorText;
         this.cooldown;
@@ -24,6 +24,10 @@ class Shop extends Phaser.Scene {
     create() {
         this.gState = GameState.TRANSITION_IN;
         this.bg = this.add.sprite(0, 0, "shop").setOrigin(0);
+        this.bgm = this.sound.add('shop');
+        this.bgm.setVolume(mute ? 0 : 0.75);
+        this.bgm.setLoop(true);
+        this.bgm.play();
 
         // Dialog box
         this.pos = 0;
@@ -63,9 +67,9 @@ class Shop extends Phaser.Scene {
                 break;
 
             case GameState.TRANSITION_OUT:
-                // this.bgm.volume = Math.max(0, this.bgm.volume - 0.015);
+                this.bgm.volume = Math.max(0, this.bgm.volume - 0.015);
                 if (this.transition.ended) {
-                    // this.bgm.stop();
+                    this.bgm.stop();
                     this.scene.start("Planets");
                 }
                 break;
@@ -74,7 +78,7 @@ class Shop extends Phaser.Scene {
                 this.updateText();
 
                 if (!this.cooldown) {
-                    this.cooldown = 10;
+                    this.cooldown = 8;
                     if (this.cursors.down.isDown) {
                         this.cursor[1] = mod(this.cursor[1] + 1, 5);
                     } else if (this.cursors.up.isDown) {
