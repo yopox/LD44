@@ -131,6 +131,21 @@ class Cargo extends Entity {
 	}
 }
 
+class Cargo2 extends Entity {
+	constructor(scene, x, y, level = 0) {
+		super(scene, x, y, 'enemy3', null, level);
+		this.flipX = true;
+		this.counter = 0;
+		this.speed = 300;
+		this.setVelocityX(-25);
+	}
+
+	update() {
+		this.counter += 1;
+		this.setVelocityY(Math.cos(this.counter / 10) * 3 * this.speed);
+	}
+}
+
 class Gunner extends Entity {
 	constructor(scene, x, y, level = 0) {
 		super(scene, x, y, 'enemy2', null, level);
@@ -165,6 +180,49 @@ class Gunner extends Entity {
 		}
 		else {
 			var laser = new EnemyLaser(this.scene, this.x - 57 + 14, this.y);
+			this.scene.enemiesLasers.add(laser);
+			this.timerShootTick = 0;
+		}
+
+	}
+}
+
+class DualShooter extends Entity {
+	constructor(scene, x, y, level = 0) {
+		super(scene, x, y, 'enemy4', null, level);
+		this.flipX = true;
+		this.brake = 50;
+		this.timerShootDelay = 70 - 10 * level;
+		this.timerShootTick = this.timerShootDelay;
+		this.setVelocityX(this.speed);
+		this.states = {
+			BRAKE: "BRAKE",
+			MAIN: "MAIN"
+		};
+		this.state = this.states.MAIN;
+
+	}
+	update() {
+
+		if (this.scene.player.x < this.x) {
+			this.state = this.states.BRAKE;
+		} else {
+			this.state = this.states.MAIN
+		}
+
+		if (this.state == this.states.BRAKE) {
+			this.setVelocityX(this.brake);
+		} else if (this.state == this.states.MAIN) {
+			this.setVelocityX(0);
+		}
+
+		if (this.timerShootTick < this.timerShootDelay) {
+			this.timerShootTick += 1;
+		}
+		else {
+			var laser = new EnemyLaser(this.scene, this.x - 21 + 14, this.y, Math.PI / 12);
+			this.scene.enemiesLasers.add(laser);
+			var laser = new EnemyLaser(this.scene, this.x - 21 + 14, this.y, -Math.PI / 12);
 			this.scene.enemiesLasers.add(laser);
 			this.timerShootTick = 0;
 		}

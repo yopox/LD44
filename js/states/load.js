@@ -21,7 +21,7 @@ class Load extends Phaser.Scene {
         this.load.tilemapTiledJSON('map', 'assets/maps/map1.json');
 
 
-        for (let i = 1; i < 4; i++) {
+        for (let i = 1; i < 5; i++) {
             this.load.image('enemy' + i, 'assets/graphics/enemy_' + i + '.png');
         }
 

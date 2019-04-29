@@ -213,7 +213,7 @@ class Level extends Phaser.Scene {
         if (this.mapEnemies.length && this.mapEnemies[0].x < this.cameras.main.scrollX + WIDTH + 32) {
             var foe = this.mapEnemies.shift();
             let level = parseInt(0 + foe.type, 10);
-            
+
             switch (foe.gid) {
                 case 6:
                     var enemy = new Cargo(this, foe.x, foe.y, level);
@@ -221,8 +221,14 @@ class Level extends Phaser.Scene {
                 case 7:
                     var enemy = new Gunner(this, foe.x, foe.y, level);
                     break;
+                case 8:
+                    var enemy = new DualShooter(this, foe.x, foe.y, level);
+                    break;
                 case 9:
                     var enemy = new FixedShooter(this, foe.x, foe.y, level);
+                    break;
+                case 10:
+                    var enemy = new Cargo2(this, foe.x, foe.y, level);
                     break;
                 default:
                     var enemy = new Chaser(this, foe.x, foe.y, level);
