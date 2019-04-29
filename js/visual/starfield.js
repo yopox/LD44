@@ -3,7 +3,7 @@ class Starfield {
     constructor(scene) {
         this.scene = scene;
         this.stars = scene.add.group();
-        this.PROBA = [0.025, 0.025, 0.015, 0.015, 0.005];
+        this.PROBA = [0.004, 0.004, 0.004, 0.004, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001];
         this.MIN_SPEED = 0.1;
         this.create(0, 2 * WIDTH, 1);
         this.frame = 0;

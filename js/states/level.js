@@ -5,13 +5,26 @@ class Level extends Phaser.Scene {
         this.starfield;
         this.gState;
         this.transition;
+
         this.speed;
         this.targetSpeed;
-        this.map;
-        this.speedModif;
-        this.victoryX;
+        
+        // GUI
         this.crew;
+        
         this.bgm;
+        
+        // Tilemap objects
+        this.map;
+        this.victoryX;
+        this.speedModif;
+        this.mapObjects;
+        this.mapEnemies;
+
+        // Sprite Groups
+        this.playerLasers;
+        this.enemiesLasers;
+        this.enemiesSprite;
     }
 
     create() {
@@ -38,26 +51,20 @@ class Level extends Phaser.Scene {
 
         var mapObjects = this.map.getObjectLayer("objects").objects;
         this.speedModif = [];
-        this.enemiesTiled = [];
+        this.mapEnemies = [];
         mapObjects.forEach(obj => {
             if (obj.gid < 5) {
                 // Speed modifiers
                 this.speedModif.push(obj);
             }
             else if (obj.gid >= 5) {
-                this.enemiesTiled.push(obj)
+                this.mapEnemies.push(obj)
             }
         });
         this.speedModif.sort(function (a, b) { return a.x - b.x });
-        this.enemiesTiled.sort(function (a, b) { return a.x - b.x });
+        this.mapEnemies.sort(function (a, b) { return a.x - b.x });
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, HEIGHT);
         this.victoryX = this.map.widthInPixels - 256;
-
-        // GUI
-        this.crew = this.add.bitmapText(64, 0, 'EquipmentPro', "Crew : " + this.game.progress.crew, 24).setOrigin(0).setScrollFactor(0);
-
-        this.transition = new Transition(this);
-        this.transition.in();
 
         this.playerLasers = this.add.group();
         this.enemiesLasers = this.add.group();
@@ -66,6 +73,12 @@ class Level extends Phaser.Scene {
         this.physics.add.overlap(this.enemiesSprite, this.playerLasers, this.touchEnemy, null, this);
         this.physics.add.overlap(this.player, this.enemiesLasers, this.getHit, this.canTouchEnemy, this);
         this.physics.add.collider(this.player, this.enemiesSprite, this.getHit, this.canTouchEnemy, this);
+
+        // GUI
+        this.crew = this.add.bitmapText(64, 0, 'EquipmentPro', "Crew : " + this.game.progress.crew, 24).setOrigin(0).setScrollFactor(0);
+
+        this.transition = new Transition(this);
+        this.transition.in();
 
     }
 
@@ -196,18 +209,20 @@ class Level extends Phaser.Scene {
 
     updateEnemies() {
 
-        if (this.enemiesTiled.length && this.enemiesTiled[0].x < this.cameras.main.scrollX + WIDTH + 64) {
-            var enemyBeam = this.enemiesTiled.shift();
-
-            switch (enemyBeam.gid) {
+        if (this.mapEnemies.length && this.mapEnemies[0].x < this.cameras.main.scrollX + WIDTH + 64) {
+            var foe = this.mapEnemies.shift();
+            let level = parseInt(0+foe.type, 10);
+            switch (foe.gid) {
                 case 5:
-                    var enemy = new Chaser(this, enemyBeam.x, enemyBeam.y, Math.floor(Math.random() * 4));
+                    var enemy = new Chaser(this, foe.x, foe.y, level);
                     break;
                 case 6:
-                    var enemy = new Cargo(this, enemyBeam.x, enemyBeam.y, Math.floor(Math.random() * 4));
+                    var enemy = new Cargo(this, foe.x, foe.y, level);
                     break;
                 case 7:
-                    var enemy = new Gunner(this, enemyBeam.x, enemyBeam.y, Math.floor(Math.random() * 4));
+                    var enemy = new Gunner(this, foe.x, foe.y, level);
+                    console.log(foe);
+                    
                     break;
             }
             this.enemiesSprite.add(enemy)

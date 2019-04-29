@@ -127,7 +127,7 @@ class Cargo extends Entity {
 		super(scene, x, y, 'enemy3', null, level);
 		this.flipX = true;
 		this.counter = 0;
-		this.speed = 1;
+		this.speed = 75;
 		this.life = 1000;
 	}
 
