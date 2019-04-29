@@ -11,17 +11,14 @@ class Entity extends Phaser.Physics.Arcade.Sprite {
 			case 0:
 				this.life = 1;
 				break;
-
 			case 1:
 				this.life = 3;
 				this.setTint(0xccff0000);
 				break;
-
 			case 2:
 				this.life = 6;
 				this.setTint(0xcc0000ff);
 				break;
-
 			case 3:
 				this.life = 10;
 				this.setTint(0xccff0000);
@@ -30,6 +27,19 @@ class Entity extends Phaser.Physics.Arcade.Sprite {
 
 	}
 
+}
+
+class Bonus extends Entity {
+	constructor(scene, x, y) {
+		super(scene, x, y, 'cosmonaut', 0);
+		this.counter = 0;
+		this.speed = 10;
+	}
+
+	update() {
+		this.counter += 1;
+		this.setVelocityY(Math.cos(this.counter / 30) * this.speed);
+	}
 }
 
 class Player extends Entity {

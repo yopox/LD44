@@ -20,11 +20,13 @@ class Level extends Phaser.Scene {
         this.speedModif;
         this.mapObjects;
         this.mapEnemies;
+        this.mapBonus;
 
         // Sprite Groups
         this.playerLasers;
         this.enemiesLasers;
         this.enemiesSprite;
+        this.bonusSprite;
     }
 
     create() {
@@ -52,26 +54,32 @@ class Level extends Phaser.Scene {
         var mapObjects = this.map.getObjectLayer("objects").objects;
         this.speedModif = [];
         this.mapEnemies = [];
+        this.mapBonus = [];
         mapObjects.forEach(obj => {
             if (obj.gid < 5) {
                 // Speed modifiers
                 this.speedModif.push(obj);
-            }
-            else if (obj.gid >= 5) {
-                this.mapEnemies.push(obj)
+            } else if (obj.gid >= 5 && obj.gid < 11) {
+                this.mapEnemies.push(obj);
+            } else {
+                this.mapBonus.push(obj);
             }
         });
         this.speedModif.sort(function (a, b) { return a.x - b.x });
         this.mapEnemies.sort(function (a, b) { return a.x - b.x });
+        this.mapBonus.sort(function (a, b) { return a.x - b.x });
+
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, HEIGHT);
         this.victoryX = this.map.widthInPixels - 256;
 
         this.playerLasers = this.add.group();
         this.enemiesLasers = this.add.group();
         this.enemiesSprite = this.add.group();
+        this.bonusSprite = this.add.group();
 
         this.physics.add.overlap(this.enemiesSprite, this.playerLasers, this.touchEnemy, null, this);
         this.physics.add.overlap(this.player, this.enemiesLasers, this.getHit, this.canTouchEnemy, this);
+        this.physics.add.overlap(this.player, this.bonusSprite, this.collectBonus, null, this);
         this.physics.add.collider(this.player, this.enemiesSprite, this.getHit, this.canTouchEnemy, this);
 
         // GUI
@@ -84,7 +92,8 @@ class Level extends Phaser.Scene {
 
     update() {
         this.updateSpeed();
-        this.updateEnemies()
+        this.updateEnemies();
+        this.updateBonus();
         this.starfield.scroll(2 * this.speed + 1);
 
         switch (this.gState) {
@@ -159,11 +168,15 @@ class Level extends Phaser.Scene {
         this.enemiesSprite.getChildren().forEach(enemy => {
             enemy.update();
         });
-
+        
         this.enemiesSprite.getChildren().forEach(enemy => {
             if (enemy.x < this.cameras.main.scrollX - 16) {
                 this.enemiesSprite.remove(enemy, true, true);
             }
+        });
+
+        this.bonusSprite.getChildren().forEach(bonus => {
+            bonus.update();
         });
 
         // Winning condition
@@ -211,10 +224,13 @@ class Level extends Phaser.Scene {
     // Transform this.mapEnemies objects into Sprite objects when they are close to the screen
     updateEnemies() {
         if (this.mapEnemies.length && this.mapEnemies[0].x < this.cameras.main.scrollX + WIDTH + 32) {
-            var foe = this.mapEnemies.shift();
+            let foe = this.mapEnemies.shift();
             let level = parseInt(0 + foe.type, 10);
 
             switch (foe.gid) {
+                case 5:
+                    var enemy = new Chaser(this, foe.x, foe.y, level);
+                    break;
                 case 6:
                     var enemy = new Cargo(this, foe.x, foe.y, level);
                     break;
@@ -230,11 +246,18 @@ class Level extends Phaser.Scene {
                 case 10:
                     var enemy = new Cargo2(this, foe.x, foe.y, level);
                     break;
-                default:
-                    var enemy = new Chaser(this, foe.x, foe.y, level);
-                    break;
             }
             this.enemiesSprite.add(enemy)
+        }
+    }
+
+    // Transform this.mapBonus objects into Bonus objects when they are close to the screen
+    updateBonus() {
+        if (this.mapBonus.length && this.mapBonus[0].x < this.cameras.main.scrollX + WIDTH + 32) {
+            let obj = this.mapBonus.shift();
+            var b = new Bonus(this, obj.x, obj.y);
+            this.bonusSprite.add(b);
+            console.log(b);
         }
     }
 
@@ -264,6 +287,12 @@ class Level extends Phaser.Scene {
         if (enemy.life == 0) {
             enemy.destroy();
         }
+    }
 
+    // Called when the player collects a bonus
+    collectBonus(player, bonus) {
+        bonus.destroy();
+        this.game.progress.crew += 1;
+        this.crew.text = "Crew : " + this.game.progress.crew;
     }
 }
