@@ -34,8 +34,8 @@ class Planets extends Phaser.Scene {
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.cursors = this.input.keyboard.createCursorKeys();
         
-        this.bitmapText = this.add.bitmapText(310, 40, 'EquipmentPro', "", 24).setOrigin(0.5);
         this.add.sprite(0, 0, "map").setOrigin(0);
+        this.bitmapText = this.add.bitmapText(310, 40, 'EquipmentPro', "", 24).setOrigin(0.5);
         
         this.position = 0;
         this.cursor = this.add.sprite(0, 0, 'cursor', 0).setOrigin(0.5);
@@ -64,7 +64,11 @@ class Planets extends Phaser.Scene {
                 this.bgm.volume = Math.max(0, this.bgm.volume - 0.015);
                 if (this.transition.ended) {
                     this.bgm.stop();
-                    this.scene.start("Level");
+                    if (this.position == 0) {
+                        this.scene.start("Shop");
+                    } else {
+                        this.scene.start("Level");
+                    }
                 }
                 break;
 

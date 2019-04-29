@@ -12,7 +12,7 @@ var config = {
         }
     },
     zoom: 2,
-    scene: [Load, Title, Diary, Planets, Level]
+    scene: [Load, Title, Diary, Planets, Shop, Level]
 };
 
 var game = new Phaser.Game(config);

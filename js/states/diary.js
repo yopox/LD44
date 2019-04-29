@@ -95,15 +95,12 @@ class Diary extends Phaser.Scene {
             }
             switch (newChar) {
                 case '.':
-                    this.textFrame = -2 * this.TEXT_SPEED;
+                    this.textFrame = -3 * this.TEXT_SPEED;
                     break;
 
                 case ' ':
-                    this.textFrame = -this.TEXT_SPEED;
-                    break;
-
                 case '\n':
-                    this.textFrame = -4 * this.TEXT_SPEED;
+                    this.textFrame = -this.TEXT_SPEED;
                     break;
             }
             this.bitmapText.text = this.text;
