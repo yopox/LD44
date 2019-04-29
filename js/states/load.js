@@ -10,7 +10,7 @@ class Load extends Phaser.Scene {
     preload() {
 
 
-        this.load.image('bullet', 'assets/graphics/bullet.png');
+        this.load.spritesheet('bullet', 'assets/graphics/bullet.png', { frameWidth: 24, frameHeight: 10 });
         this.load.spritesheet('cursor', 'assets/graphics/cursor.png', { frameWidth: 32, frameHeight: 32 });
         this.load.image('star', 'assets/graphics/background.png');
         this.load.image('door', 'assets/graphics/door.png');
