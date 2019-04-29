@@ -8,12 +8,12 @@ class Level extends Phaser.Scene {
 
         this.speed;
         this.targetSpeed;
-        
+
         // GUI
         this.crew;
-        
+
         this.bgm;
-        
+
         // Tilemap objects
         this.map;
         this.victoryX;
@@ -114,31 +114,25 @@ class Level extends Phaser.Scene {
                 break;
 
             default:
+                // Player x movement
                 if (this.cursors.up.isDown && this.player.y > 18) {
                     this.player.moveUp();
-                }
-                else if (this.cursors.down.isDown && HEIGHT - this.player.y > 18) {
+                } else if (this.cursors.down.isDown && HEIGHT - this.player.y > 18) {
                     this.player.moveDown();
-                }
-                else {
+                } else {
                     this.player.stopY();
                 }
+                
+                // Player y movement
                 if (this.cursors.left.isDown && this.player.x > this.cameras.main.scrollX + 32) {
                     this.player.moveLeft();
-                }
-                else if (this.cursors.right.isDown && this.player.x < this.cameras.main.scrollX + WIDTH - 32) {
+                } else if (this.cursors.right.isDown && this.player.x < this.cameras.main.scrollX + WIDTH - 32) {
                     this.player.moveRight();
-                }
-                else {
+                } else {
                     this.player.stopX();
                 }
-                if (this.cursors.space.isDown) {
-                    this.player.isShooting = true;
 
-                }
-                else {
-                    this.player.isShooting = false;
-                }
+                this.player.isShooting = this.cursors.space.isDown;
                 this.player.update()
                 break;
         }
@@ -181,6 +175,7 @@ class Level extends Phaser.Scene {
         this.player.destroy();
     }
 
+    // Change the speed if the player moves beyond this.speedModif[0]
     updateSpeed() {
         if (this.speedModif.length && this.speedModif[0].x < this.player.x) {
             var sM = this.speedModif.shift();
@@ -207,11 +202,11 @@ class Level extends Phaser.Scene {
         });
     }
 
+    // Transform this.mapEnemies objects into Sprite objects when they are close to the screen
     updateEnemies() {
-
-        if (this.mapEnemies.length && this.mapEnemies[0].x < this.cameras.main.scrollX + WIDTH + 64) {
+        if (this.mapEnemies.length && this.mapEnemies[0].x < this.cameras.main.scrollX + WIDTH + 32) {
             var foe = this.mapEnemies.shift();
-            let level = parseInt(0+foe.type, 10);
+            let level = parseInt(0 + foe.type, 10);
             switch (foe.gid) {
                 case 5:
                     var enemy = new Chaser(this, foe.x, foe.y, level);
@@ -221,15 +216,18 @@ class Level extends Phaser.Scene {
                     break;
                 case 7:
                     var enemy = new Gunner(this, foe.x, foe.y, level);
-                    console.log(foe);
-                    
                     break;
             }
             this.enemiesSprite.add(enemy)
         }
-
     }
 
+    // Condition for the player to take a hit
+    canTouchEnemy(player, x) {
+        return player.invincibility == 0;
+    }
+
+    // Called when the player overlaps with a laser and isn't invincible
     getHit(player, enemy) {
         if (this.game.progress.crew > 0) {
             this.game.progress.crew -= 1;
@@ -241,14 +239,9 @@ class Level extends Phaser.Scene {
             }
         }
         enemy.destroy();
-
-
     }
 
-    canTouchEnemy(player, x) {
-        return player.invincibility == 0;
-    }
-
+    // Overlap callback when a laser touches an enemy
     touchEnemy(enemy, laser) {
         laser.destroy();
         enemy.life -= this.game.progress.damage;;
