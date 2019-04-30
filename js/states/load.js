@@ -17,6 +17,7 @@ class Load extends Phaser.Scene {
         this.load.spritesheet('tiles', 'assets/graphics/tileset.png', { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('cosmonaut', 'assets/graphics/cosmonaut.png', { frameWidth: 12, frameHeight: 12 });
         this.load.spritesheet('asteroids', 'assets/graphics/asteroids.png', { frameWidth: 70, frameHeight: 70 });
+        this.load.spritesheet('bullets', 'assets/graphics/bullets.png', { frameWidth: 24, frameHeight: 9 });
         this.load.image('ship', 'assets/graphics/jet.png');
         this.load.image('boss', 'assets/graphics/boss.png');
         this.load.image('shopCursor', 'assets/graphics/shopCursor.png');
@@ -26,7 +27,7 @@ class Load extends Phaser.Scene {
             this.load.tilemapTiledJSON('map' + i, 'assets/maps/map' + i + '.json');
         }
 
-        for (let i = 1; i < 5; i++) {
+        for (let i = 1; i < 7; i++) {
             this.load.image('enemy' + i, 'assets/graphics/enemy_' + i + '.png');
         }
 

@@ -139,6 +139,9 @@ class Level extends Phaser.Scene {
                 break;
 
             case GameState.WINNING_STATE:
+                this.player.setAcceleration(0, 0);
+                this.player.setMaxVelocity(600);
+                this.player.setVelocity(600, 0);
                 if (this.player.x > this.victoryX + 128) {
                     this.gState = GameState.TRANSITION_OUT;
                     this.transition.out();
@@ -185,13 +188,17 @@ class Level extends Phaser.Scene {
         this.player.x += this.speed;
 
         this.playerLasers.getChildren().forEach(laser => {
-            laser.x += this.speed;
+            laser.update(this.speed);
         });
 
         this.playerLasers.getChildren().forEach(laser => {
             if (laser.x > this.cameras.main.scrollX + WIDTH + 16) {
                 this.playerLasers.remove(laser, true, true);
             }
+        });
+
+        this.enemiesLasers.getChildren().forEach(laser => {
+            laser.update();
         });
 
         this.enemiesLasers.getChildren().forEach(laser => {
@@ -217,7 +224,6 @@ class Level extends Phaser.Scene {
         // Winning condition
         if (this.player.x > this.victoryX && this.gState == GameState.MAIN) {
             this.gState = GameState.WINNING_STATE;
-            this.player.setVelocityX(300);
             this.player.isShooting = false;
         }
 
