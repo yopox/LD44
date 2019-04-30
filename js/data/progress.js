@@ -12,6 +12,8 @@ class Progress {
         this.stats = [300, 1, 30, 1];
         this.statsLevel = [0, 0, 0, 0];
         this.visited = [false, false, false, false, false, false];
+        this.textDisplayed = [false, false, false, false, false, false];
+        this.lastVisited = -1;
         this.resume = false;
         this.firstShopVisit = [false, false];
         this.shopDiary = false;

@@ -2,7 +2,7 @@ class Level extends Phaser.Scene {
 
     constructor() {
         super('Level');
-        this.LEVEL_BGM = ['easy', 'medium', 'hard', 'medium', 'easy', 'hard'];
+        this.LEVEL_BGM = ['easy', 'easy', 'hard', 'medium', 'hard', 'medium'];
 
         this.levelId;
         this.starfield;
@@ -50,6 +50,7 @@ class Level extends Phaser.Scene {
         this.game.progress.updateStats();
 
         this.game.progress.visited[this.levelId] = true;
+        this.game.progress.lastVisited = this.levelId;
         // Orientation is decided when entering level 3
         if (this.game.progress.countVisited() == 3) {
             if (this.game.progress.countUpgrades() > 2) {
@@ -149,7 +150,11 @@ class Level extends Phaser.Scene {
                 if (this.transition.ended) {
                     this.bgm.stop();
                     this.resetScene();
-                    this.scene.start("Diary");
+                    if (!this.game.progress.textDisplayed[this.levelId]) {
+                        this.scene.start("Diary");
+                    } else {
+                        this.scene.start("Planets");
+                    }
                     return false;
                 }
                 break;

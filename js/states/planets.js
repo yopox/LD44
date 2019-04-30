@@ -10,12 +10,12 @@ class Planets extends Phaser.Scene {
         this.POSITIONS = [[85, 247], [221, 182], [227, 296], [317, 198], [422, 169], [451, 103], [533, 187]];
         this.DESCRIPTIONS = [
             "SHOP",
-            "PLANET X54 - EASY",
-            "PLANET E20 - MEDIUM",
+            "PLANET X54 - VERY EASY",
+            "PLANET E20 - EASY",
             "SUN - SLAVE MAFIA HIDEOUT - HARD",
-            "PLANET R85 - MEDIUM",
-            "PLANET G99 - EASY",
-            "PLANET Y42 - EASY",
+            "ASTEROID FIELD - MEDIUM",
+            "PLANET G99 - HARD",
+            "PLANET Y42 - MEDIUM",
         ]
         this.position;
         this.cursors;
@@ -72,7 +72,7 @@ class Planets extends Phaser.Scene {
                 break;
 
             default:
-                if (this.keySpace.isDown && !(this.position && this.game.progress.visited[this.position - 1])) {
+                if (this.keySpace.isDown) {
                     this.gState = GameState.TRANSITION_OUT;
                     this.transition.out();
                 } else if (this.cursors.right.isDown && !this.cooldown) {

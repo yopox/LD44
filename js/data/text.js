@@ -235,5 +235,6 @@ function getLog(progress) {
     }
     
     progress.day++;
+    progress.textDisplayed[progress.lastVisited] = true;
     return message;
 }

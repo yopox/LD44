@@ -21,7 +21,7 @@ class Load extends Phaser.Scene {
         this.load.image('shopCursor', 'assets/graphics/shopCursor.png');
         this.load.bitmapFont('EquipmentPro', 'assets/font/equipmentpro_medium_12.png', 'assets/font/equipmentpro_medium_12.fnt');
 
-        for (let i = 1; i < 6; i++) {
+        for (let i = 1; i < 7; i++) {
             this.load.tilemapTiledJSON('map' + i, 'assets/maps/map' + i + '.json');
         }
 
