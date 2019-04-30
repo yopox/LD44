@@ -62,7 +62,11 @@ class Diary extends Phaser.Scene {
                 this.bgm.volume = Math.max(0, this.bgm.volume - 0.015);
                 if (this.transition.ended) {
                     this.bgm.stop();
-                    this.scene.start("Planets");
+                    if (this.game.progress.crew == 0 || this.game.progress.ended) {
+                        this.scene.start("Title");
+                    } else {
+                        this.scene.start("Planets");
+                    }
                 }
                 break;
 

@@ -15,6 +15,8 @@ class Title extends Phaser.Scene {
     }
 
     create() {
+        this.game.progress = new Progress();
+
         this.gState = GameState.TRANSITION_IN;
         this.frame = 0;
         this.bgm = this.sound.add('planets');

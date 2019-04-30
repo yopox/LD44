@@ -47,6 +47,29 @@ class Level extends Phaser.Scene {
         this.bgm.setLoop(true);
         this.bgm.play();
 
+        this.game.progress.updateStats();
+
+        this.game.progress.visited[this.levelId] = true;
+        // Orientation is decided when entering level 3
+        if (this.game.progress.countVisited() == 3) {
+            if (this.game.progress.countUpgrades() > 2) {
+                this.game.progress.orientation = Orientations.BAD;
+            }
+            if (!this.game.progress.countUpgrades()) {
+                this.game.progress.orientation = Orientations.GOOD;
+            }
+        }
+
+        // Condition for staying good
+        if (this.game.progress.orientation == Orientations.GOOD && this.game.progress.countUpgrades()) {
+            this.game.progress.orientation = Orientations.NEUTRAL;
+        }
+
+        // Condition for staying bad
+        if (this.game.progress.orientation == Orientations.BAD && this.game.progress.releasedSlaves) {
+            this.game.progress.orientation = Orientations.NEUTRAL;
+        }
+
         this.player = new Player(
             this,
             WIDTH / 6,
@@ -126,7 +149,6 @@ class Level extends Phaser.Scene {
                 if (this.transition.ended) {
                     this.bgm.stop();
                     this.resetScene();
-                    this.game.progress.visited[this.levelId] = true;
                     this.scene.start("Diary");
                     return false;
                 }
@@ -295,7 +317,7 @@ class Level extends Phaser.Scene {
     // Overlap callback when a laser touches an enemy
     touchEnemy(enemy, laser) {
         laser.destroy();
-        enemy.life -= this.game.progress.damage;
+        enemy.life -= this.game.progress.stats[1];
     }
 
     // Called when the player collects a bonus

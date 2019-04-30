@@ -179,6 +179,59 @@ function getLog(progress) {
                 message += BAD_GAME_OVER;
                 break;
         }
+    } else if (progress.visited[3]) {
+        switch (progress.orientation) {
+            case Orientations.NEUTRAL:
+                message += NEUTRAL_6;
+                break;
+            case Orientations.GOOD:
+                message += GOOD_6;
+                break;
+            case Orientations.BAD:
+                message += BAD_6;
+                break;
+        }
+        progress.ended = true;
+    } else if (progress.countVisited() == 1) {
+        message += NEUTRAL_1;
+    } else if (progress.countVisited() == 2) {
+        message += NEUTRAL_2;
+    } else if (progress.countVisited() == 3) {
+        switch (progress.orientation) {
+            case Orientations.NEUTRAL:
+                message += NEUTRAL_3;
+                break;
+            case Orientations.GOOD:
+                message += GOOD_3;
+                break;
+            case Orientations.BAD:
+                message += BAD_3;
+                break;
+        }
+    } else if (progress.countVisited() == 4) {
+        switch (progress.orientation) {
+            case Orientations.NEUTRAL:
+                message += NEUTRAL_4;
+                break;
+            case Orientations.GOOD:
+                message += GOOD_4;
+                break;
+            case Orientations.BAD:
+                message += BAD_4;
+                break;
+        }
+    }  else if (progress.countVisited() == 5) {
+        switch (progress.orientation) {
+            case Orientations.NEUTRAL:
+                message += NEUTRAL_5;
+                break;
+            case Orientations.GOOD:
+                message += GOOD_5;
+                break;
+            case Orientations.BAD:
+                message += BAD_5;
+                break;
+        }
     }
     
     progress.day++;

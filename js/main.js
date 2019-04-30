@@ -20,7 +20,6 @@ var config = {
 };
 
 var game = new Phaser.Game(config);
-game.progress = new Progress();
 var mute = false;
 
 var GameState = {

@@ -59,9 +59,9 @@ class Player extends Entity {
 	constructor(scene, x, y) {
 		super(scene, x, y, "ship");
 		this.speed = 2500;
-		this.setMaxVelocity(250);
+		this.setMaxVelocity(game.progress.stats[0]);
 		this.isShooting = false;
-		this.timerShootDelay = game.progress.tears;
+		this.timerShootDelay = game.progress.stats[2];
 		this.timerShootTick = 0;
 		this.invincibility = 0;
 	}
