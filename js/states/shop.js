@@ -15,14 +15,14 @@ class Shop extends Phaser.Scene {
         this.textFrame;
         this.TEXT_SPEED = 2;
         this.TAUNTS = [
-            "Still thinking about\ngiving away your crew\nhuh?",
-            "I do not accept the\nwounded and sick!",
-            "Don't think, just take it!",
+            "Still thinking about\ngiving away your crew\nhuh ?",
+            "I do not accept the\nwounded and sick !",
+            "Don't think, just take it !",
             "This guy looks handsome,\nI could make you a\nprice for him ;)",
             "Look at all these weapons,\njust for you ;o",
-            "I have a lot to offer...\nIf you pay the price!",
+            "I have a lot to offer...\nIf you pay the price !",
             "Seems like you have too\nmany people here ;)",
-            "Wanna let some of your\nmen go?",
+            "Wanna let some of your\nmen go ?",
             "I'll take care of these\nones for you...",
             "Half price on this cannon!\nHuh, just kidding...",
             "I hope we can do business\ntogether...\nI smell fresh slaves !"

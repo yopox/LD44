@@ -194,12 +194,12 @@ class Boss extends Entity {
 		}
 		else {
 			if (this.state == this.states.SIMPLE_SHOT) {
-				var laser = new EnemyLaser(this.scene, this.x - 120 + 14, this.y + 8);
+				var laser = new EnemyLaser(this.scene, this.x - 82 + 14, this.y + 2);
 				this.scene.enemiesLasers.add(laser);
 			} else if (this.state == this.states.DOUBLE_SHOT) {
-				var laser1 = new EnemyLaser(this.scene, this.x - 120 + 14, this.y + 8, Math.PI / 8);
+				var laser1 = new EnemyLaser(this.scene, this.x - 82 + 14, this.y + 2, Math.PI / 8);
 				this.scene.enemiesLasers.add(laser1);
-				var laser2 = new EnemyLaser(this.scene, this.x - 120 + 14, this.y + 8, -Math.PI / 8);
+				var laser2 = new EnemyLaser(this.scene, this.x - 82 + 14, this.y + 2, -Math.PI / 8);
 				this.scene.enemiesLasers.add(laser2);
 			}
 			this.timerShootTick = 0;

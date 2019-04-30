@@ -27,7 +27,7 @@ class Title extends Phaser.Scene {
         this.starfield = new Starfield(this);
 
         this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        this.add.bitmapText(WIDTH / 2, HEIGHT / 4, 'EquipmentPro', 'Slave Oddysey', 60).setOrigin(0.5);
+        this.add.bitmapText(WIDTH / 2, HEIGHT / 4, 'EquipmentPro', 'Slave Odyssey', 60).setOrigin(0.5);
         this.space = this.add.bitmapText(WIDTH / 2, 3 * HEIGHT / 4, 'EquipmentPro', 'Press SPACE to begin', 24).setOrigin(0.5);
 
         this.transition = new Transition(this);

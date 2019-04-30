@@ -45,17 +45,17 @@ var BAD_4 =
 var BAD_5 =
     "This system is to bow to me supremacy.\n" +
     "After those weak planets I shall destroy this\n" +
-    "so called Baron.\n"
-"Prepare yourself Baron\n" +
-    "you are in for a challenge!";
+    "so called Baron.\n" +
+    "Prepare yourself Baron\n" +
+    "you are in for a challenge !";
 
 var BAD_6 =
     "Ah ... Finally ...\n" +
     "This system is mine, minions, admire your\n" +
-    "new Supreme Leader !\n"
-"Slaves, kneel before me, your life is now\n" +
-    "mine !\n"
-"My ascension will be told for centuries as I\n" +
+    "new Supreme Leader !\n" +
+    "Slaves, kneel before me, your life is now\n" +
+    "mine !\n" +
+    "My ascension will be told for centuries as I\n" +
     "now own these worlds !\n";
 
 var NEUTRAL_1 =
@@ -90,7 +90,7 @@ var NEUTRAL_5 =
     "I've never been this close to this\n" +
     "Baron bastard...\n" +
     "I'm gonna make him pay for all the\n" +
-    "sacrifices my boys had to do!\n";
+    "sacrifices my boys had to do !\n";
 
 var NEUTRAL_6 =
     "The Baron is down, and now all\n" +
@@ -106,14 +106,14 @@ var GOOD_3 =
     "I sure could not sell any members for\n" +
     "anything. These men lives are worth\n" +
     "a hundred vessels.\n" +
-    "I am glad we do not need it anyway\n";
+    "I am glad we do not need it anyway...\n";
 
 var GOOD_4 =
     "They say the strength of a captain\n" +
     "is his ship...\n" +
     "They are all wrong !\n" +
     "A captain's strength comes from\n" +
-    "his men and crew\n" +
+    "his men and crew.\n" +
     "Go forth lads ! Freedom awaits !";
 
 var GOOD_5 =
@@ -123,7 +123,7 @@ var GOOD_5 =
     "Hear this people of the system !\n" +
     "We will free you from slavery !\n" +
     "It was a long path but I can\n" +
-    "feel the end is near!";
+    "feel the end is near !";
 
 var GOOD_6 =
     "At last, the system is released from\n" +
