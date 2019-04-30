@@ -281,8 +281,14 @@ class Level extends Phaser.Scene {
                 case 10:
                     var enemy = new Cargo2(this, foe.x, foe.y, level);
                     break;
-                default:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
                     var enemy = new Asteroid(this, foe.x, foe.y, foe.gid - 12);
+                    break;
+                case 16:
+                    var enemy = new Boss(this, foe.x, foe.y);
                     break;
             }
             this.enemiesSprite.add(enemy)
@@ -323,6 +329,8 @@ class Level extends Phaser.Scene {
     touchEnemy(enemy, laser) {
         laser.destroy();
         enemy.life -= this.game.progress.stats[1];
+        console.log(enemy.life);
+        
     }
 
     // Called when the player collects a bonus

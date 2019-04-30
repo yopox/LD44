@@ -2,7 +2,7 @@ class Shop extends Phaser.Scene {
 
     constructor() {
         super('Shop');
-        this.NAMES = ['Motor', 'Cadency', 'Damage', 'Shots No.'];
+        this.NAMES = ['Motor', 'Damage', 'Cadency', 'Shots No.'];
         this.transition;
         this.gState;
         this.bgm;

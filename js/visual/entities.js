@@ -1,3 +1,9 @@
+// Boss behavior
+// 0 - 100 : rien
+// 100 - 190 : simple tir
+// 190 - 270 : rien
+// fin : tir double
+
 class Entity extends Phaser.Physics.Arcade.Sprite {
 
 	constructor(scene, x, y, asset, frame = null, level = 0) {
@@ -29,7 +35,7 @@ class Entity extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	update() {
-		if (this.life == 0) {
+		if (this.life <= 0) {
 			if (this.alpha == 0) {
 				this.setActive(false);
 			} else {
@@ -64,6 +70,7 @@ class Player extends Entity {
 		this.timerShootDelay = game.progress.stats[2];
 		this.timerShootTick = 0;
 		this.invincibility = 0;
+		this.shotsNo = game.progress.stats[3];
 	}
 
 	moveX(factor) {
@@ -90,8 +97,37 @@ class Player extends Entity {
 
 		this.timerShootTick = (this.timerShootTick + 1) % this.timerShootDelay;
 		if (this.timerShootTick == 0) {
-			var laser = new PlayerLaser(this.scene, this.x + 37 - 24, this.y + 2);
-			this.scene.playerLasers.add(laser);
+			switch (this.shotsNo) {
+				case 1:
+					var laser = new PlayerLaser(this.scene, this.x + 37 - 24, this.y + 2);
+					this.scene.playerLasers.add(laser);
+					break;
+				case 2:
+					var laser1 = new PlayerLaser(this.scene, this.x + 37 - 24, this.y + 2, Math.PI / 14);
+					this.scene.playerLasers.add(laser1);
+					var laser2 = new PlayerLaser(this.scene, this.x + 37 - 24, this.y + 2, -Math.PI / 14);
+					this.scene.playerLasers.add(laser2);
+					break;
+				case 3:
+					var laser1 = new PlayerLaser(this.scene, this.x + 37 - 24, this.y + 2, Math.PI / 10);
+					this.scene.playerLasers.add(laser1);
+					var laser2 = new PlayerLaser(this.scene, this.x + 37 - 24, this.y + 2, 0);
+					this.scene.playerLasers.add(laser2);
+					var laser3 = new PlayerLaser(this.scene, this.x + 37 - 24, this.y + 2, -Math.PI / 10);
+					this.scene.playerLasers.add(laser3);
+					break;
+				case 4:
+					var laser1 = new PlayerLaser(this.scene, this.x + 37 - 24, this.y + 2, Math.PI / 8);
+					this.scene.playerLasers.add(laser1);
+					var laser2 = new PlayerLaser(this.scene, this.x + 37 - 24, this.y + 2, Math.PI / 16);
+					this.scene.playerLasers.add(laser2);
+					var laser3 = new PlayerLaser(this.scene, this.x + 37 - 24, this.y + 2, -Math.PI / 16);
+					this.scene.playerLasers.add(laser3);
+					var laser4 = new PlayerLaser(this.scene, this.x + 37 - 24, this.y + 2, -Math.PI / 8);
+					this.scene.playerLasers.add(laser4);
+					break;
+			}
+			
 		}
 	}
 }
@@ -118,6 +154,58 @@ class Asteroid extends Entity {
 		}
 	}
 
+}
+
+class Boss extends Entity {
+	constructor(scene, x, y, level = 0) {
+		super(scene, x, y, 'boss');
+		this.states = {
+			NOTHING: "NOTHING",
+			SIMPLE_SHOT: "SIMPLE_SHOT",
+			DOUBLE_SHOT: "DOUBLE_SHOT",
+			DEATH: "DEATH"
+		};
+		this.scene = scene;
+		this.state = this.states.NOTHING;
+		this.timerShootTick = 0;
+		this.timerShootDelay = 50;
+		this.mark1 = 100 * 32;
+		this.mark2 = 190 * 32;
+		this.mark3 = 270 * 32;
+		this.mark4 = 450 * 32;
+		this.setVelocityX(-2);
+	}
+
+	update() {
+		this.x += this.scene.speed;
+
+		if (this.x > this.mark1 && this.x < this.mark2) {
+			this.state = this.states.SIMPLE_SHOT;
+		} else if (this.x > this.mark2 && this.x < this.mark3) {
+			this.state = this.states.NOTHING
+		} else if (this.x > this.mark3 && this.x < this.mark4) {
+			this.state = this.states.DOUBLE_SHOT
+		} else if (this.x > this.mark4) {
+			this.state = this.states.DEATH
+		}
+
+		if (this.timerShootTick < this.timerShootDelay) {
+			this.timerShootTick += 1;
+		}
+		else {
+			if (this.state == this.states.SIMPLE_SHOT) {
+				var laser = new EnemyLaser(this.scene, this.x - 120 + 14, this.y + 8);
+				this.scene.enemiesLasers.add(laser);
+			} else if (this.state == this.states.DOUBLE_SHOT) {
+				var laser1 = new EnemyLaser(this.scene, this.x - 120 + 14, this.y + 8, Math.PI / 8);
+				this.scene.enemiesLasers.add(laser1);
+				var laser2 = new EnemyLaser(this.scene, this.x - 120 + 14, this.y + 8, -Math.PI / 8);
+				this.scene.enemiesLasers.add(laser2);
+			}
+			this.timerShootTick = 0;
+		}
+
+	}
 }
 
 class Chaser extends Entity {
@@ -301,10 +389,11 @@ class FixedShooter extends Entity {
 }
 
 class PlayerLaser extends Entity {
-	constructor(scene, x, y) {
+	constructor(scene, x, y, angle = 0) {
 		super(scene, x, y, "bullet1");
 		this.body.offset.x = scene.speed;
-		this.setVelocityX(400);
+		this.setVelocity(400 * Math.cos(angle), 400 * Math.sin(angle));
+		this.setAngle(angle)
 	}
 }
 
@@ -314,6 +403,7 @@ class EnemyRocket extends Entity {
 		this.flipX = true;
 		this.body.offset.x = scene.speed;
 		this.setVelocityX(-100 - scene.speed * 60);
+		this.setAngle(180 * angle / Math.PI);
 	}
 }
 
