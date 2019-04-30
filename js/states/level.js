@@ -62,7 +62,7 @@ class Level extends Phaser.Scene {
         }
 
         // Condition for staying good
-        if (this.game.progress.orientation == Orientations.GOOD && this.game.progress.countUpgrades()) {
+        if (this.game.progress.orientation == Orientations.GOOD && (this.game.progress.countUpgrades() || this.game.progress.releasedSlaves)) {
             this.game.progress.orientation = Orientations.NEUTRAL;
         }
 
@@ -329,8 +329,6 @@ class Level extends Phaser.Scene {
     touchEnemy(enemy, laser) {
         laser.destroy();
         enemy.life -= this.game.progress.stats[1];
-        console.log(enemy.life);
-        
     }
 
     // Called when the player collects a bonus
