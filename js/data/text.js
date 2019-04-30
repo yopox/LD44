@@ -157,7 +157,7 @@ var NEUTRAL_GAME_OVER =
 
 
 function getLog(progress) {
-    var message = "LOG - DAY " + progress.day + ":\n";
+    var message = "LOG - DAY " + progress.day + " :\n";
 
     if (progress.day == 1) {
         // Initial message

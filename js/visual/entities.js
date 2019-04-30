@@ -21,15 +21,15 @@ class Entity extends Phaser.Physics.Arcade.Sprite {
 				break;
 			case 1:
 				this.life = 3;
-				this.setTint(0xccff0000);
+				this.setTint(0xcc0000ff);
 				break;
 			case 2:
 				this.life = 6;
-				this.setTint(0xcc0000ff);
+				this.setTint(0xccff0000);
 				break;
 			case 3:
 				this.life = 10;
-				this.setTint(0xccff0000);
+				this.setTint(0xcc00ff00);
 				break;
 		}
 	}

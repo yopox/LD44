@@ -97,6 +97,8 @@ class Diary extends Phaser.Scene {
             switch (newChar) {
                 case '.':
                 case ':':
+                case '!':
+                case '?':
                     this.textFrame = -3 * this.TEXT_SPEED;
                     break;
 
