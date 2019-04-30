@@ -80,7 +80,7 @@ class Shop extends Phaser.Scene {
 
         // Game progress
         if (!this.game.progress.firstShopVisit[0]) {
-            this.game.progress.firstShopVisit = [true, true];
+            this.game.progress.firstShopVisit = [true, false];
         }
     }
 
