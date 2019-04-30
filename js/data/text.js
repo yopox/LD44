@@ -179,7 +179,7 @@ function getLog(progress) {
                 message += BAD_GAME_OVER;
                 break;
         }
-    } else if (progress.visited[3]) {
+    } else if (progress.visited[2]) {
         switch (progress.orientation) {
             case Orientations.NEUTRAL:
                 message += NEUTRAL_6;
