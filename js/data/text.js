@@ -6,7 +6,7 @@ var INITIAL_MESSAGE =
     "My crew is a little nervous about the whole\n" +
     "thing, but I am trying to assure them nothing\n" +
     "is going to harm us.\n" +
-    "I will investigate further this situation.";
+    "I will investigate this situation further.";
 
 var FIRST_SHOP_1 =
     "Well, I can only tell I now know how slavery\n" +
@@ -22,7 +22,7 @@ var FIRST_SHOP_2 =
     "Well, I can only tell I now know how slavery\n" +
     "developped here. Everything is paid in slaves.\n" +
     "However these new ship features were crucial.\n" +
-    "I surely saved more lives buy letting a few go.\n" +
+    "I surely saved more lives by letting a few go.\n" +
     "Still I am preoccupied by a few things, in order\n" +
     "to defeat the Baron, I should upgrade my vessel.\n" +
     "I could either sell my crew or wish that I am\n" +
@@ -36,7 +36,7 @@ var BAD_3 =
     "costs !\n";
 
 var BAD_4 =
-    "I think I just escaped a mutiny ther...\n" +
+    "I think I just escaped a mutiny there...\n" +
     "Maybe these bastards do not want to be\n" +
     "part of this journey anymore.\n" +
     "No problem guys, I still have weapons\n" +
@@ -46,11 +46,11 @@ var BAD_5 =
     "This system is to bow to me supremacy.\n" +
     "After those weak planets I shall destroy this\n" +
     "so called Baron.\n" +
-    "Prepare yourself Baron\n" +
-    "you are in for a challenge !";
+    "Prepare yourself Baron, you are in\n" +
+    "for a challenge !";
 
 var BAD_6 =
-    "Ah ... Finally ...\n" +
+    "Ah... Finally...\n" +
     "This system is mine, minions, admire your\n" +
     "new Supreme Leader !\n" +
     "Slaves, kneel before me, your life is now\n" +
@@ -59,25 +59,24 @@ var BAD_6 =
     "now own these worlds !\n";
 
 var NEUTRAL_1 =
-    "This planet wasn't a tough one\n" +
-    "and I already feel like this is the \n" +
-    "toughest affair I've taken part in.\n\n" +
+    "This planet wasn't a tough one and I\n" +
+    "already feel like this is the toughest\n" +
+    "affair I've taken part in.\n\n" +
     "Gotta make a decision here on the way\n" +
     "to go next.";
 
 var NEUTRAL_2 =
-    "Still not sure about what I'm gonna\n" +
-    "do here.\n" +
-    "I'm gonna keep it this way for the\n" +
-    "moment and when things will blow...\n" +
+    "Still not sure about what I'm gonna do here.\n" +
+    "I'm gonna keep it this way for the moment\n" +
+    "and when things will blow...\n" +
     "Well, we're not there yet !";
 
 var NEUTRAL_3 =
-    "Those men I sold have done better than\n" +
-    "any other still here, we will remember\n" +
-    "them as the good men they are.\n" +
-    "Anyway, this mission is having me do\n" +
-    "bad things. Hope it'll turn to be for\n" +
+    "Those men I sold have done better than any\n" +
+    "other still here, we will remember them\n" +
+    "as the good men they are.\n" +
+    "Anyway, this mission is having me do bad\n" +
+    "things. Hope it'll turn to be for\n" +
     "the best.";
 
 var NEUTRAL_4 =
@@ -88,18 +87,18 @@ var NEUTRAL_4 =
 
 var NEUTRAL_5 =
     "I've never been this close to this\n" +
-    "Baron bastard...\n" +
+    "Baron bastard...\n\n" +
     "I'm gonna make him pay for all the\n" +
     "sacrifices my boys had to do !\n";
 
 var NEUTRAL_6 =
-    "The Baron is down, and now all\n" +
-    "the men in the system are free.\n" +
-    "I take my responsabilities for the\n" +
-    "good men I had to leave behind,\n" +
-    "and I'll make sure we never forget 'em\n" +
+    "The Baron is down, and now all the men\n" +
+    "in the system are free.\n" +
+    "I take my responsabilities for the good men\n" +
+    "I had to leave behind, and I'll make sure\n" +
+    "we never forget 'em.\n" +
     "Now I'm gonna leave and hell...\n" +
-    "it's 'bout time.";
+    "It's 'bout time.";
 
 var GOOD_3 =
     "We made it !\n" +
@@ -120,7 +119,7 @@ var GOOD_5 =
     "Only the Baron is left...\n" +
     "And it is already like hell\n" +
     "out there...\n" +
-    "Hear this people of the system !\n" +
+    "Hear this, people of the system !\n" +
     "We will free you from slavery !\n" +
     "It was a long path but I can\n" +
     "feel the end is near !";
@@ -132,7 +131,7 @@ var GOOD_6 =
     "I am proud of what we have\n" +
     "accomplished here.\n" +
     "I hope everything will be alright...\n" +
-    "until next time !";
+    "Until next time !";
 
 var GOOD_GAME_OVER =
     "I have lost too many boys here...\n" +
@@ -142,7 +141,7 @@ var GOOD_GAME_OVER =
     "to save the others...\n";
 
 var BAD_GAME_OVER =
-    "This power is does is not enough ...\n" +
+    "This power... is not enough...\n" +
     "I am too weak to maneuver this ship alone.\n" +
     "I should have kept a few souls to assist\n" +
     "me.\n" +
@@ -158,7 +157,7 @@ var NEUTRAL_GAME_OVER =
 
 
 function getLog(progress) {
-    var message = "LOG - DAY " + progress.day + " :\n";
+    var message = "LOG - DAY " + progress.day + ":\n";
 
     if (progress.day == 1) {
         // Initial message
