@@ -150,7 +150,7 @@ class Level extends Phaser.Scene {
                 if (this.transition.ended) {
                     this.bgm.stop();
                     this.resetScene();
-                    if (!this.game.progress.textDisplayed[this.levelId]) {
+                    if (!this.game.progress.textDisplayed[this.levelId] || this.game.progress.crew <= 0) {
                         this.scene.start("Diary");
                     } else {
                         this.scene.start("Planets");
