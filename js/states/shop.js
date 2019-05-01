@@ -29,7 +29,7 @@ class Shop extends Phaser.Scene {
         ];
         this.cursor;
         this.cursorSprite;
-        this.cooldown;
+        this.justClicked;
 
         this.remainingCrew;
         this.cost;
@@ -54,6 +54,7 @@ class Shop extends Phaser.Scene {
         this.text = "";
         this.fullText = "Welcome to my shop !\n" + this.TAUNTS[Math.floor(Math.random() * this.TAUNTS.length)];
         this.bitmapText = this.add.bitmapText(440, 240, 'EquipmentPro', '', 12).setOrigin(0);
+        this.isDown = [false, false];
 
         // Choices
         this.upgrade = [];
@@ -69,7 +70,6 @@ class Shop extends Phaser.Scene {
         // Cursor
         this.cursor = [0, 0];
         this.cursorSprite = this.add.sprite(91, 180, 'shopCursor').setOrigin(0.5, 0);
-        this.cooldown = 0;
 
         // Keyboard
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -109,10 +109,9 @@ class Shop extends Phaser.Scene {
 
             default:
                 this.updateText();
-                this.cooldown = !this.cooldown ? 0 : this.cooldown - 1;
 
-                if (!this.cooldown) {
-                    this.cooldown = 15;
+                if (!this.isDown[0] && (this.cursors.down.isDown || this.cursors.up.isDown || this.cursors.left.isDown || this.cursors.right.isDown)) {
+                    this.isDown[0] = true;
                     if (this.cursors.down.isDown) {
                         this.cursor[1] = mod(this.cursor[1] + 1, 5);
                         if (this.cursor[0] == 1 && this.cursor[1] == 4) {
@@ -141,32 +140,42 @@ class Shop extends Phaser.Scene {
                     }
                     this.updateTexts();
 
-                    if (this.keySpace.isDown) {
-                        if (this.cursor[0] == 0 && this.cursor[1] == 4) {
-                            this.gState = GameState.TRANSITION_OUT;
-                            this.transition.out();
-                        } else {
-                            switch (this.cursor[0]) {
-                                case 0:
-                                    let c1 = this.game.progress.upgradeCost(this.game.progress.statsLevel[this.cursor[1]]);
-                                    if (c1 != -1 && this.game.progress.crew > c1) {
-                                        this.game.progress.statsLevel[this.cursor[1]]++;
-                                        this.game.progress.crew -= c1;
-                                        this.game.progress.boughtSomething = true;
-                                    }
-                                    break;
-                            
-                                case 1:
-                                    let c2 = this.game.progress.downgradeCost(this.game.progress.statsLevel[this.cursor[1]]);
-                                    if (c2 != -1) {
-                                        this.game.progress.statsLevel[this.cursor[1]]--;
-                                        this.game.progress.crew += c2;
-                                        this.game.progress.releasedSlaves = true;
-                                    }
-                                    break;
-                            }
+                }
+
+                if (!this.isDown[1] && this.keySpace.isDown) {
+                    this.isDown[1] = true;
+                    if (this.cursor[0] == 0 && this.cursor[1] == 4) {
+                        this.gState = GameState.TRANSITION_OUT;
+                        this.transition.out();
+                    } else {
+                        switch (this.cursor[0]) {
+                            case 0:
+                                let c1 = this.game.progress.upgradeCost(this.game.progress.statsLevel[this.cursor[1]]);
+                                if (c1 != -1 && this.game.progress.crew > c1) {
+                                    this.game.progress.statsLevel[this.cursor[1]]++;
+                                    this.game.progress.crew -= c1;
+                                    this.game.progress.boughtSomething = true;
+                                }
+                                break;
+                        
+                            case 1:
+                                let c2 = this.game.progress.downgradeCost(this.game.progress.statsLevel[this.cursor[1]]);
+                                if (c2 != -1) {
+                                    this.game.progress.statsLevel[this.cursor[1]]--;
+                                    this.game.progress.crew += c2;
+                                    this.game.progress.releasedSlaves = true;
+                                }
+                                break;
                         }
                     }
+                }
+
+                if (!this.cursors.left.isDown && !this.cursors.right.isDown && !this.cursors.up.isDown && !this.cursors.down.isDown) {
+                    this.isDown[0] = false;
+                }
+
+                if (!this.keySpace.isDown) {
+                    this.isDown[1] = false;
                 }
 
                 break;
@@ -225,7 +234,7 @@ class Shop extends Phaser.Scene {
 
         for (let j = 0; j < 4; j++) {
             var c1 = this.game.progress.upgradeCost(this.game.progress.statsLevel[j]);
-            if (c1 == -1) {
+            if (c1 == -1 || this.game.progress.crew <= c1) {
                 this.upgrade[j].alpha = 0.5;
             } else {
                 this.upgrade[j].alpha = 1;
